@@ -179,3 +179,59 @@ Metadata is essentially extra information attached to program elements that surv
 - Complex TypeScript types can produce difficult error messages.
 
 > For long TypeScript errors, the most useful detail is often near the end.
+
+## Chapter 3
+
+Development in Typescript with Express and React.
+
+### Setup
+
+1. Install support to allow Node.js to make use of type checking, compilation, and richer tooling. This package provides the Typescript Compiler (TSC).
+
+```bash
+npm install --save-dev typescript
+```
+
+Reason: Node.js removes type annotations and relies on remaining Javascript.
+
+1. Use `script` in `package.json` to type check Typescript code.
+
+```json
+{
+  // treat files in this package as ES modules (ESM) rather than CommonJS modules
+  "type": "module",
+  // use import/export syntax instead of require
+  "scripts": {
+   "tsc": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  }
+}
+```
+See `chapter-3/package.json`.
+
+To validate type checking on a file:
+
+```bash
+npm run tsc file.ts
+```
+
+`--noEmit` flag instructs compiler to not generate Javascript output.
+
+1. Configure `tsconfig.json`:
+
+```json
+{
+  "compilerOptions":{
+    "noImplicitAny": false,
+    "noEmit": true
+  }
+}
+```
+
+A file to instruct the Typescript compiler how to interpret code, i.e., how it should work, which files to consume and ignore, and [more](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html).
+
+[`noImplicitAny`](https://www.typescriptlang.org/tsconfig#noImplicitAny) - set to `false` to not enforce all variables to require type.
+
+1. Remove `--noEmit` from the line `"tsc": "tsc --noEmit"` in `package.json` to reduce redundancy since it is also set in `tsconfig.json`.
