@@ -29,7 +29,6 @@ This chapter provides an overview of Typescript.
 - Designed for large Javascript development.
 - Has development-time tooling, static code analysis, compile-time type checking and code-level documentation.
 
-
 ```mermaid
 ---
 config:
@@ -109,7 +108,7 @@ A function that returns a string:
 
 ```typescript
 const hello = (name: string): string => {
-    return `Hello ${name}!`;
+  return `Hello ${name}!`;
 };
 
 console.log(hello("world"));
@@ -130,7 +129,6 @@ Typescript decides whether two values are compatible based on their shape—that
 For example:
 
 ```typescript
-
 class Dog {
   name: string;
 }
@@ -202,13 +200,14 @@ Reason: Node.js removes type annotations and relies on remaining Javascript.
   "type": "module",
   // use import/export syntax instead of require
   "scripts": {
-   "tsc": "tsc --noEmit"
+    "tsc": "tsc --noEmit"
   },
   "devDependencies": {
     "typescript": "^5.9.3"
   }
 }
 ```
+
 See `chapter-3/package.json`.
 
 To validate type checking on a file:
@@ -223,7 +222,7 @@ npm run tsc file.ts
 
 ```json
 {
-  "compilerOptions":{
+  "compilerOptions": {
     "noImplicitAny": false,
     "noEmit": true
   }
@@ -235,3 +234,61 @@ A file to instruct the Typescript compiler how to interpret code, i.e., how it s
 [`noImplicitAny`](https://www.typescriptlang.org/tsconfig#noImplicitAny) - set to `false` to not enforce all variables to require type.
 
 1. Remove `--noEmit` from the line `"tsc": "tsc --noEmit"` in `package.json` to reduce redundancy since it is also set in `tsconfig.json`.
+
+### Custom Types
+
+Illustrated in `chapter-3/multiplier.ts`.
+
+### Type Narrowing
+
+The type for `error` in the try-catch block i.e. `catch (error) {}` is the type `unknown`.
+
+`unknown` is a type-safe counterpart for the type `any`.
+
+Anything can be assigned as `unknown`. However, `unknown` can only be assigned to the same type `unknown`.
+
+`unknown` can be assigned to the type `any` if and only if there is no type asertion or a control flow-based type narrowing.
+
+Type narrowing for error can be done with the `instanceOf` keyword:
+
+```typescript
+catch (error: unknown) {
+  let errorMessage = 'Something went wrong: '
+  // here we can not use error.message
+  if (error instanceof Error) {
+   // the type is narrowed and we can refer to error.message
+    errorMessage += error.message;
+```
+
+### Command Line Arguments
+
+Requires this package installed:
+
+```bash
+npm install --save-dev @types/node
+```
+
+Command line arguments can be access through `process.argv`.
+
+### What is the `@types/{npm-package}` library?
+
+Typescript expects code to be typed, including external libraries.
+
+However, many library code is not typed.
+
+[DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped) is a community-maintained catalogue of helper libraries to offer typed code for different packages under the `@types/` organization.
+
+It is redundant to install an `@types/` package if the package needed already has type support for Typescript.
+
+> Check the package’s documentation or `package.jso`n for a `types` field.
+>
+> Install `@types/` packages as `devDependencies`, since is it only needed during development and build
+>
+> Makes sure to keep their versions aligned with the dependent library to avoid mismatches.
+
+Libraries that lack type support:
+
+- `@types/react`
+- `@types/lodash`
+- `@types/mongoose`
+- `@types/express`
