@@ -1,8 +1,10 @@
+import {argumentSanitation} from "./utils.ts";
+
 const calculateBmi = (height: number, weight: number) => {
   // convert height in cm to m
   const heightInMeters = height / 100;
 
-  const bmi = weight / (Math.pow(heightInMeters, 2));
+  const bmi = weight / Math.pow(heightInMeters, 2);
 
   if (bmi <= 18.5) {
     return "Underweight range";
@@ -19,4 +21,18 @@ const calculateBmi = (height: number, weight: number) => {
   }
 };
 
-console.log(calculateBmi(180, 74));
+// console.log(calculateBmi(180, 74));
+
+try {
+  const { option, numbers } = argumentSanitation(process.argv);
+
+  console.log(
+    `calculateBmi: height of ${option} with weight of ${numbers[0]} has the BMI of: ${calculateBmi(option, numbers[0])}`,
+  );
+} catch (error: unknown) {
+  let errorMessage = "calculateBmi ERROR: ";
+  if (error instanceof Error) {
+    errorMessage += " Error: " + error.message;
+  }
+  console.log(errorMessage);
+}

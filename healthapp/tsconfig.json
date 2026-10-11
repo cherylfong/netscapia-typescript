@@ -2,6 +2,8 @@
   "compilerOptions": {
     "noImplicitAny": false,
     "noEmit": true,
+    "module": "nodenext",
+    "allowImportingTsExtensions": true,
     "types": ["node"]
   }
 }
