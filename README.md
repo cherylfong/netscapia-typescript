@@ -268,7 +268,19 @@ Requires this package installed:
 npm install --save-dev @types/node
 ```
 
-Command line arguments can be access through `process.argv`.
+Then add `"types": ["node"]` to `tsconfig.json`:
+
+```json
+{
+  "compilerOptions": {
+    "noImplicitAny": false,
+    "noEmit": true,
+    "types": ["node"]
+  }
+}
+```
+
+Command line arguments can now be access through `process.argv`.
 
 ### What is the `@types/{npm-package}` library?
 
