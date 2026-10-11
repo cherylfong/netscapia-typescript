@@ -53,13 +53,59 @@ const calculatorImproved = (a: number, b: number, op: Operation): number => {
 };
 
 try {
-  console.log("Original calculator:", calculator(1, 5, "divide"));
+  console.log("Original calculator: Hard Coded 1*5 = ", calculator(1, 5, "times"));
 
-  console.log("Improved calculator: ", calculatorImproved(1, 5, "divide"));
+  const a: number = Number(process.argv[2])
+  const b: number = Number(process.argv[3])
+
+  console.log(`Improved calculator: Multiply ${a} and ${b} =`, calculatorImproved(a, b, "times"));
+
+
 } catch (error: unknown) {
   let errorMessage = "Something went wrong: ";
   if (error instanceof Error) {
     errorMessage += error.message;
+  }
+  console.log(errorMessage);
+}
+
+
+// Type Checked Commandline Arguments
+//
+//
+interface MultiplyValues {
+  value1: number;
+  value2: number;
+}
+const argumentSanitation = (args: string[]): MultiplyValues => {
+
+  // requires 3 arguments
+  if (args.length < 4) throw new Error('Not enough arguments');
+  if (args.length > 4) throw new Error('Too many arguments');
+
+  // if values are not NaN as a result of the Number casting then return casted value1 and casted value2
+  if (!isNaN(Number(args[2])) && !isNaN(Number(args[3]))) {
+    return {
+      value1: Number(args[2]),
+      value2: Number(args[3])
+    }
+  } else {
+    throw new Error('Provided values were not numbers!');
+  }
+}
+
+const multiplyWithTypeChecking = (a: number, b: number, printText: string) => {
+  console.log(printText,  a * b);
+}
+
+try {
+  const { value1, value2 } = argumentSanitation(process.argv);
+
+  multiplyWithTypeChecking(value1, value2, `multiplyWithTypeChecking: Multiplied ${value1} and ${value2}, the result is:`);
+} catch (error: unknown) {
+  let errorMessage = 'multiplyWithTypeChecking: Something bad happened.'
+  if (error instanceof Error) {
+    errorMessage += ' Error: ' + error.message;
   }
   console.log(errorMessage);
 }
