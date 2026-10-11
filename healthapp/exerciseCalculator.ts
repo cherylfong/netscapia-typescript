@@ -1,3 +1,5 @@
+import { argumentSanitation } from "./utils.ts";
+
 type Rating = 1 | 2 | 3;
 
 interface Result {
@@ -13,8 +15,8 @@ interface Result {
 // calculates the average time of daily exercise hours and compares average with target amount
 // parameter is array of hours
 // returns Result object
-const calculateExercises = (hours: number[]): Result => {
-  const target: number = 2;
+const calculateExercises = (target: number, hours: number[]): Result => {
+  //   const target: number = 2;
   const average: number = hours.reduce((a, b) => a + b) / hours.length;
 
   // rating is a measure of how close the average is to the target
@@ -64,5 +66,21 @@ const calculateExercises = (hours: number[]): Result => {
   };
 };
 
-const test = [3, 0, 2, 4.5, 0, 3, 1];
-console.log(calculateExercises(test));
+// const test = [3, 0, 2, 4.5, 0, 3, 1];
+// console.log(calculateExercises(test));
+
+try {
+  const { option, numbers } = argumentSanitation(process.argv);
+
+  console.log(
+    `calculateExercises: target of ${option} with the hours of ${numbers} has the following result: `,
+  );
+
+  console.log(calculateExercises(option, numbers));
+} catch (error: unknown) {
+  let errorMessage = "calculateExercises ERROR: ";
+  if (error instanceof Error) {
+    errorMessage += " Error: " + error.message;
+  }
+  console.log(errorMessage);
+}
