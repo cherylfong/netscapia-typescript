@@ -304,3 +304,34 @@ Libraries that lack type support:
 - `@types/lodash`
 - `@types/mongoose`
 - `@types/express`
+
+### Typescript Interface
+
+TypeScript's [Interface](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#interfaces) can be used to create objects with custom attributes.
+
+### Typescript Arrays
+
+[Arrays](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#arrays) can be declared in the following manner:
+
+```typescript
+let values: number[];
+```
+
+Or,
+
+```typescript
+let values: Array<number>;
+```
+
+Eslint's [array-simple](https://typescript-eslint.io/rules/array-type/#array-simple) rule enforces using the `[]` syntax for simple arrays while using `<>` generics syntax for non primitive types.
+
+Correct [suggestions](https://typescript-eslint.io/rules/array-type/#array-simple) by Eslint:
+
+```typescript
+const a: Array<string | number> = ["a", "b"];
+const b: Array<{ prop: string }> = [{ prop: "a" }];
+const c: Array<() => void> = [() => {}];
+const d: MyType[] = ["a", "b"];
+const e: string[] = ["a", "b"];
+const f: readonly string[] = ["a", "b"];
+```
