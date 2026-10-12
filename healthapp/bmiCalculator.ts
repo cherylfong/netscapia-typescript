@@ -1,4 +1,4 @@
-import {argumentSanitation} from "./utils.ts";
+import { argumentSanitation } from "./utils.ts";
 
 const calculateBmi = (height: number, weight: number) => {
   // convert height in cm to m
@@ -23,16 +23,20 @@ const calculateBmi = (height: number, weight: number) => {
 
 // console.log(calculateBmi(180, 74));
 
-try {
-  const { option, numbers } = argumentSanitation(process.argv);
-
-  console.log(
-    `calculateBmi: height of ${option} with weight of ${numbers[0]} has the BMI of: ${calculateBmi(option, numbers[0])}`,
-  );
-} catch (error: unknown) {
-  let errorMessage = "calculateBmi ERROR: ";
-  if (error instanceof Error) {
-    errorMessage += " Error: " + error.message;
+// code block does not run if module is exported (used as an imported file in another file)
+if (process.argv[1] === import.meta.filename) {
+  try {
+    const { option, numbers } = argumentSanitation(process.argv);
+    console.log(
+      `calculateBmi: height of ${option} with weight of ${numbers[0]} has the BMI of: ${calculateBmi(option, numbers[0])}`,
+    );
+  } catch (error: unknown) {
+    let errorMessage = "calculateBmi ERROR: ";
+    if (error instanceof Error) {
+      errorMessage += " Error: " + error.message;
+    }
+    console.log(errorMessage);
   }
-  console.log(errorMessage);
 }
+
+export default calculateBmi;
