@@ -373,3 +373,42 @@ app.get('/ping', (_req, res) => {
   res.send('pong');
 });
 ```
+
+### Typescript with Express Setup
+
+Install the following:
+
+```bash
+npm install express
+
+npm install --save-dev @types/express
+
+npm install --save-dev concurrently
+```
+
+Set `package.json` to have the following script definitions:
+
+```json
+  "scripts": {
+    "tsc": "tsc",
+    "start": "node index.ts",
+    "dev": "concurrently \"tsc --watch\" \"node --watch index.ts\""
+  },
+```
+
+[Concurrently](https://www.npmjs.com/package/concurrently) allows running type checking and Node in watch mode at the same time.
+
+`npm start` assumes type checking is done before code is executed.
+
+`npm run dev` allows auto-reloading for the development. The app will continue to run even if type errors occur, so pay attention to the console output.
+
+#### Development with Type Checking
+
+The current trend relies on the editor for type checking while writing code, and run tsc --noEmit in a [continuous integration](https://courses.mooc.fi/org/uh-cs/courses/full-stack-open-continuous-integration) pipeline or as a Git [pre-commit](https://pre-commit.com/) hook.
+
+This keeps the dev loop lightweight.
+
+`node --watch src/index.ts` runs code on save, while the editor surfaces type errors in real time.
+
+Type safety is still enforced, just at the moment that matter rather than blocking every run.
+
