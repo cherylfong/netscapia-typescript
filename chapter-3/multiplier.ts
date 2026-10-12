@@ -1,6 +1,6 @@
-const multiply = (a, b, printText) => {
-  console.log(printText, a * b);
-};
+// const multiply = (a, b, printText) => {
+//   console.log(printText, a * b);
+// };
 
 // multiply(2, 4, 'Multiplied numbers 2 and 4, the result is:');
 // returns 8
@@ -8,9 +8,9 @@ const multiply = (a, b, printText) => {
 // multiply("how about a string?", 4, "Multiplied a string and 4, the result is:");
 // returns NaN
 
-const multiplyWithTypes = (a: number, b: number, printText: string) => {
-  console.log(printText, a * b);
-};
+// const multiplyWithTypes = (a: number, b: number, printText: string) => {
+//   console.log(printText, a * b);
+// };
 
 // VSCode or editor shows type error without needing to execute the code to show runtime error
 // multiplyWithTypes('how about a string?', 4, 'Multiplied a string and 4, the result is:');
@@ -53,14 +53,18 @@ const calculatorImproved = (a: number, b: number, op: Operation): number => {
 };
 
 try {
-  console.log("Original calculator: Hard Coded 1*5 = ", calculator(1, 5, "times"));
+  console.log(
+    "Original calculator: Hard Coded 1*5 = ",
+    calculator(1, 5, "times"),
+  );
 
-  const a: number = Number(process.argv[2])
-  const b: number = Number(process.argv[3])
+  const a: number = Number(process.argv[2]);
+  const b: number = Number(process.argv[3]);
 
-  console.log(`Improved calculator: Multiply ${a} and ${b} =`, calculatorImproved(a, b, "times"));
-
-
+  console.log(
+    `Improved calculator: Multiply ${a} and ${b} =`,
+    calculatorImproved(a, b, "times"),
+  );
 } catch (error: unknown) {
   let errorMessage = "Something went wrong: ";
   if (error instanceof Error) {
@@ -68,7 +72,6 @@ try {
   }
   console.log(errorMessage);
 }
-
 
 // Type Checked Commandline Arguments
 //
@@ -78,34 +81,37 @@ interface MultiplyValues {
   value2: number;
 }
 const argumentSanitation = (args: string[]): MultiplyValues => {
-
   // requires 3 arguments
-  if (args.length < 4) throw new Error('Not enough arguments');
-  if (args.length > 4) throw new Error('Too many arguments');
+  if (args.length < 4) throw new Error("Not enough arguments");
+  if (args.length > 4) throw new Error("Too many arguments");
 
   // if values are not NaN as a result of the Number casting then return casted value1 and casted value2
   if (!isNaN(Number(args[2])) && !isNaN(Number(args[3]))) {
     return {
       value1: Number(args[2]),
-      value2: Number(args[3])
-    }
+      value2: Number(args[3]),
+    };
   } else {
-    throw new Error('Provided values were not numbers!');
+    throw new Error("Provided values were not numbers!");
   }
-}
+};
 
 const multiplyWithTypeChecking = (a: number, b: number, printText: string) => {
-  console.log(printText,  a * b);
-}
+  console.log(printText, a * b);
+};
 
 try {
   const { value1, value2 } = argumentSanitation(process.argv);
 
-  multiplyWithTypeChecking(value1, value2, `multiplyWithTypeChecking: Multiplied ${value1} and ${value2}, the result is:`);
+  multiplyWithTypeChecking(
+    value1,
+    value2,
+    `multiplyWithTypeChecking: Multiplied ${value1} and ${value2}, the result is:`,
+  );
 } catch (error: unknown) {
-  let errorMessage = 'multiplyWithTypeChecking: Something bad happened.'
+  let errorMessage = "multiplyWithTypeChecking: Something bad happened.";
   if (error instanceof Error) {
-    errorMessage += ' Error: ' + error.message;
+    errorMessage += " Error: " + error.message;
   }
   console.log(errorMessage);
 }
