@@ -2,10 +2,15 @@
   "type": "module",
   "scripts": {
     "tsc": "tsc",
-    "multiply": "tsc && node multiplier.ts"
+    "multiply": "tsc && node multiplier.ts",
+    "start": "tsc && node index.ts"
   },
   "devDependencies": {
+    "@types/express": "^5.0.6",
     "@types/node": "^26.6.5",
     "typescript": "^7.0.2"
+  },
+  "dependencies": {
+    "express": "^5.3.0"
   }
 }
