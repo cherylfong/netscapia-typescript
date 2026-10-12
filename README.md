@@ -282,6 +282,16 @@ Then add `"types": ["node"]` to `tsconfig.json`:
 
 Command line arguments can now be access through `process.argv`.
 
+#### To Only have a Block of Code Execute when Called from the Command Line
+
+Use the following
+
+```javascript
+if (process.argv[1] === import.meta.filename) {
+  // this code block does not execute if the module is exported (i.e. imported by another file)
+}
+```
+
 ### What is the `@types/{npm-package}` library?
 
 Typescript expects code to be typed, including external libraries.
