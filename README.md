@@ -21,7 +21,7 @@ This chapter provides an overview of Typescript.
 ### What is [Typescript](https://www.typescriptlang.org/)?
 
 - Typed superset of JavaScript.
-- Can be compiled into Javascript standard ECMAScript 3 or newever.
+- Can be compiled into Javascript standard ECMAScript 3 or newer.
 - **All existing Javascript code is valid Typescript**.
 
 ### What is Typescript for?
@@ -102,7 +102,7 @@ The Central Processing Unit (CPU) cannot execute JavaScript source code directly
 
 #### Type Annotations
 
-Enforces the behaviour of a function or variable.
+Enforces the behavior of a function or variable.
 
 A function that returns a string:
 
@@ -145,7 +145,7 @@ Structural typing is NOT by type name.
 
 #### Type Inference
 
-Infering a type when the type has not be explicitly given. It can determine a type based on contextual typing such as where a value is being used. This occurs during compile-time type analysis.
+Inferring a type when the type has not be explicitly given. It can determine a type based on contextual typing such as where a value is being used. This occurs during compile-time type analysis.
 
 #### Type Erasure
 
@@ -159,7 +159,7 @@ Metadata is essentially extra information attached to program elements that surv
 
 ### Why use Typescript?
 
-- Type checking and static code analysis can reduce runtime erros, and reduce the number of unit tests. It safeguards against typos and doing something out of scope.
+- Type checking and static code analysis can reduce runtime errors, and reduce the number of unit tests. It safeguards against typos and doing something out of scope.
 - Code-level documentation makes it easier to work on existing code as the a function signature can provide the types of data is can return.
 - Types can be reused.
 - IDEs can provide specific and smarter code hints or suggestions.
@@ -229,7 +229,7 @@ npm run tsc file.ts
 }
 ```
 
-A file to instruct the Typescript compiler how to interpret code, i.e., how it should work, which files to consume and ignore, and [more](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html).
+A file to instruct the Typescript compiler how to interpret code, i.e., [how it should work, which files to consume and ignore, and more](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html).
 
 [`noImplicitAny`](https://www.typescriptlang.org/tsconfig#noImplicitAny) - set to `false` to not enforce all variables to require type.
 
@@ -247,7 +247,7 @@ The type for `error` in the try-catch block i.e. `catch (error) {}` is the type 
 
 Anything can be assigned as `unknown`. However, `unknown` can only be assigned to the same type `unknown`.
 
-`unknown` can be assigned to the type `any` if and only if there is no type asertion or a control flow-based type narrowing.
+`unknown` can be assigned to the type `any` if and only if there is no type assertion or a control flow-based type narrowing.
 
 Type narrowing for error can be done with the `instanceOf` keyword:
 
@@ -379,8 +379,8 @@ Prefix the unused parameter with an `_` underscore to inform the compiler that i
 For example:
 
 ```typescript
-app.get('/ping', (_req, res) => {
-  res.send('pong');
+app.get("/ping", (_req, res) => {
+  res.send("pong");
 });
 ```
 
