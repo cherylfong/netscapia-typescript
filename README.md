@@ -335,3 +335,25 @@ const d: MyType[] = ["a", "b"];
 const e: string[] = ["a", "b"];
 const f: readonly string[] = ["a", "b"];
 ```
+
+### Typescript Compiler Options
+
+Details of [compiler options](https://www.typescriptlang.org/tsconfig/).
+
+The following is a basic declaration of compiler options to develop with Express:
+
+```json
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "noEmit": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "module": "nodenext",
+    "esModuleInterop": true,
+    "allowImportingTsExtensions": true
+  }
+}
+```
