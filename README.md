@@ -422,3 +422,31 @@ This keeps the dev loop lightweight.
 
 Type safety is still enforced, just at the moment that matter rather than blocking every run.
 
+### Express Path versus Query Parameters
+
+#### Path Parameters
+
+Uses `/:`.
+
+For example:
+
+```javascript
+// Usage /bmi/180/72
+app.get("/bmi/:height/:weight", (req: Request, res: Response) => {
+  const height: number = Number(req.params.height);
+  const weight: number = Number(req.params.weight);
+
+```
+
+#### Query Parameters
+
+Use `?`.
+
+For example:
+
+```javascript
+// Usage: /bmi?height=180&weight=72
+app.get("/bmi", (req: Request, res: Response) => {
+  const height = Number(req.query.height);
+  const weight = Number(req.query.weight);
+```
