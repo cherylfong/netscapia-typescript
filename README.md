@@ -357,3 +357,19 @@ The following is a basic declaration of compiler options to develop with Express
   }
 }
 ```
+
+This option sets the compiler to have any unused parameters:
+
+`"noUnusedParameters": true,`
+
+However there are cases when there are library-wide predefined functions that require declaring a variable even if it's not used at all.
+
+Prefix the unused parameter with an `_` underscore to inform the compiler that it can be ignored.
+
+For example:
+
+```typescript
+app.get('/ping', (_req, res) => {
+  res.send('pong');
+});
+```
