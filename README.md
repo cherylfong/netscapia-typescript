@@ -450,3 +450,59 @@ app.get("/bmi", (req: Request, res: Response) => {
   const height = Number(req.query.height);
   const weight = Number(req.query.weight);
 ```
+
+### Default Type in Typescript
+
+Variables with unspecified types will be given the [type `any`](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any). In other words, variables are implicitly the type `any` until explicitly given a type.
+
+#### Development Setup to Prevent Usage of the Type `any`
+
+Use the compiler option [`noImplicitAny`](https://www.typescriptlang.org/tsconfig#noImplicitAny) to enforce no usage of the type `any` unless explicitly given the type any (which is usually a rare situation).
+
+ESlint can also help enforce no _explicit_ use of the type `any`, install with:
+
+```bash
+npm install --save-dev eslint @eslint/js typescript-eslint
+```
+
+Use the following `eslint.config.mjs` to [disallow explicit use of the type `any`](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-explicit-any.mdx):
+
+```javascript
+import eslint from "@eslint/js";
+import tseslint from "typescript-eslint";
+
+export default tseslint.config({
+  files: ["**/*.ts"],
+  extends: [
+    eslint.configs.recommended,
+    ...tseslint.configs.recommendedTypeChecked,
+  ],
+  languageOptions: {
+    parserOptions: {
+      project: true,
+      tsconfigRootDir: import.meta.dirname,
+    },
+  },
+  rules: {
+    "@typescript-eslint/no-explicit-any": "error",
+  },
+});
+```
+
+And also configure `package.json` to add a script to run ESlint:
+
+```json
+{
+  // ...
+  "scripts": {
+    "tsc": "tsc",
+    "calculate": "tsc && node calculator.ts",
+    "multiply": "tsc && node multiplier.ts",
+    "start": "node index.ts",
+    "dev": "concurrently \"tsc --watch\" \"node --watch index.ts\"",
+    "lint": "eslint ."
+    //  ...
+  }
+  // ...
+}
+```
