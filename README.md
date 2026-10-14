@@ -506,3 +506,5 @@ And also configure `package.json` to add a script to run ESlint:
   // ...
 }
 ```
+
+> VSCode may occasionally show type or style related warnings despite having fixed the code. If this occurs, restart the editor. To verify code correctness, run the commands `npm run tsc` and `npm run lint`.
