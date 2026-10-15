@@ -17,7 +17,7 @@
 
 // custom types
 // string literal types
-type Operation = "times" | "add" | "divide";
+export type Operation = "times" | "add" | "divide";
 
 type Result = string | number;
 
@@ -38,7 +38,7 @@ const calculator = (a: number, b: number, op: Operation): Result => {
 //If the Operation parameter's value comes from an external interface, there is no definite guarantee that it will be one of the allowed values.
 // Therefore, it's still better to include error handling and be prepared for the unexpected to happen.
 
-const calculatorImproved = (a: number, b: number, op: Operation): number => {
+export const calculatorImproved = (a: number, b: number, op: Operation): number => {
   switch (op) {
     case "times":
       return a * b;
