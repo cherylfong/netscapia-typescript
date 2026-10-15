@@ -511,3 +511,12 @@ And also configure `package.json` to add a script to run ESlint:
 > VSCode may occasionally show type or style related warnings despite having fixed the code. If this occurs, restart the editor. To verify code correctness, run the commands `npm run tsc` and `npm run lint`.
 >
 > It may be required to restart the ESLint extension to apply the rules defined in the `eslint.config.mjs`.
+
+### Type Assertion
+
+[Asserting types](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#type-assertions) informs the Typescript compiler the type for variables.
+
+Typescript types are removed at runtime, so ype-only imports must be explicitly stated with the keyword `type`. For example, `import { calculator, type Operation } from './calculator';`.
+
+> Note that if the asserted type does not have the type appropriate value, this will result in a runtime error!
+> Always validate received data, especially user input.
