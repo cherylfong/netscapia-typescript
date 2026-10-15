@@ -469,9 +469,10 @@ Use the following `eslint.config.mjs` to [disallow explicit use of the type `any
 
 ```javascript
 import eslint from "@eslint/js";
+import { defineConfig } from "eslint/config";
 import tseslint from "typescript-eslint";
 
-export default tseslint.config({
+export default defineConfig({
   files: ["**/*.ts"],
   extends: [
     eslint.configs.recommended,
@@ -508,3 +509,5 @@ And also configure `package.json` to add a script to run ESlint:
 ```
 
 > VSCode may occasionally show type or style related warnings despite having fixed the code. If this occurs, restart the editor. To verify code correctness, run the commands `npm run tsc` and `npm run lint`.
+>
+> It may be required to restart the ESLint extension to apply the rules defined in the `eslint.config.mjs`.
