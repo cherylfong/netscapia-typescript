@@ -514,6 +514,35 @@ And also configure `package.json` to add a script to run ESlint:
 >
 > It may be required to restart the ESLint extension to apply the rules defined in the `eslint.config.mjs`.
 
+### Using Typescript 7 for Compilation and Typescript 6 for ESLint in the Same Project
+
+Install Typescript 6:
+
+```bash
+npm install --save-dev 'typescript@npm:@typescript/typescript6@^6.0.2'
+```
+
+Install Typescript 7::
+
+```bash
+npm install --save-dev '@typescript/native@npm:typescript@^7.0.2'
+```
+
+Configure `package.json` to have the following defined. `tsc` uses Typescript 7 while ESLint will use "typescript", i.e. Typescript 6, to execute by default.
+
+```json
+{
+  "scripts": {
+    "tsc": "node ./node_modules/@typescript/native/bin/tsc",
+    "lint": "eslint ."
+  },
+  "devDependencies": {
+    "@typescript/native": "npm:typescript@^7.0.2",
+    "typescript": "npm:@typescript/typescript6@^6.0.2"
+  }
+}
+```
+
 ### Type Assertion
 
 [Asserting types](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#type-assertions) informs the Typescript compiler the type for variables.
