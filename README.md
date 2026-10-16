@@ -465,6 +465,8 @@ ESlint can also help enforce no _explicit_ use of the type `any`, install with:
 npm install --save-dev eslint @eslint/js typescript-eslint
 ```
 
+Installation require to use the option `--legacy-peer-deps` until a newer version of ESlint is compatible with Typescript 6.
+
 Use the following `eslint.config.mjs` to [disallow explicit use of the type `any`](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-explicit-any.mdx):
 
 ```javascript
