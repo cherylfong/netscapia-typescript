@@ -568,3 +568,96 @@ Typescript types are removed at runtime, so ype-only imports must be explicitly 
 
 > Note that if the asserted type does not have the type appropriate value, this will result in a runtime error!
 > Always validate received data, especially user input.
+
+## Chapter 4
+
+⚠️ The Typescript code used in these chapters are not compiled into Javascript due to the `noEmit`set to `true` compiler option.
+
+`npm run tsc` checks types but does not produce Javascript.
+
+> Node is handling Typescript code at runtime.
+
+### Basic TypeScript Express Project Setup
+
+Install commands:
+
+```bash
+npm install typescript --save-dev
+```
+
+```bash
+npm install express
+```
+
+```bash
+npm install --save-dev eslint @eslint/js typescript-eslint @stylistic/eslint-plugin @types/express
+```
+
+```bash
+npm install --save-dev concurrently
+```
+
+#### Typescript Config For Express Development
+
+This command is used to initialize a `tsconfig.json`:
+
+```bash
+ npm run tsc -- --init
+```
+
+> Note that `run tsc` before the `--` flag are arguments for the `npm` command. While arguments after `--` such as `--init` are arguments used by the `tsc` script.
+
+A sample of options used in `tsconfig.json`:
+
+```json
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "noEmit": true,
+    "module": "nodenext",
+    "esModuleInterop": true,
+    "allowImportingTsExtensions": true,
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true
+  }
+}
+```
+
+- `esnext` - compile to the latest JavaScript features.
+- `nodenext` - use Node.js native module resolution for ES Modules (ESM), i.e., use _import_ syntax instead of require.
+- [`esModuleInterop`](https://www.staging-typescript.org/tsconfig#esModuleInterop) - enables compatibility between CommonJS and ESM module styles. Without this requires writing `import * as express from 'express'`.
+- `allowImportingTsExtensions` - enables importing Typescript files directly. This is necessary when code is executed with Node.js.
+
+- [`"strict" : true`](https://www.staging-typescript.org/tsconfig#strict) enables the following options:
+  - `noImplicitAny`
+  - `noImplicitThis`
+  - `alwaysStrict`
+  - `strictBindCallApply`
+  - `strictNullChecks`
+  - `strictFunctionTypes`
+  - `strictPropertyInitialization`
+
+#### ESLint Configuration for Typescript
+
+See [`/flightdiaries/backend/eslint.config.mjs`](flightdiaries/backend/eslint.config.mjs) for an example config.
+
+#### `package.json` scripts Configuration
+
+```json
+{
+  //...
+
+  "scripts": {
+    "tsc": "tsc",
+    "dev": "concurrently \"tsc --watch\" \"node --watch --experimental-transform-types src/index.ts\"",
+    "start": "node --experimental-transform-types  src/index.ts",
+    "lint": "eslint ."
+  }
+  // ...
+}
+```
+
+The example above is taken from [`/flightdiaries/backend/package.json`](flightdiaries/backend/package.json).
