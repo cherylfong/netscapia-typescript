@@ -644,20 +644,23 @@ A sample of options used in `tsconfig.json`:
 
 See [`/flightdiaries/backend/eslint.config.mjs`](flightdiaries/backend/eslint.config.mjs) for an example config.
 
-#### `package.json` scripts Configuration
+### Node.js `--experimental-transform-types` Option
+
+Node's built-in TypeScript support strips types by removing type annotations and runs the remaining Javascript.
+
+`--experimental-transform-types` enables Node.js to handle Typescript features beyond type annotations and those that require actual code transformation.
 
 ```json
 {
-  //...
-
+  // ...
   "scripts": {
     "tsc": "tsc",
     "dev": "concurrently \"tsc --watch\" \"node --watch --experimental-transform-types src/index.ts\"",
-    "start": "node --experimental-transform-types  src/index.ts",
-    "lint": "eslint ."
+    "start": "node --experimental-transform-types  src/index.ts"
   }
-  // ...
 }
 ```
 
 The example above is taken from [`/flightdiaries/backend/package.json`](flightdiaries/backend/package.json).
+
+`--experimental-transform-types` is considered an experimental option and its behavior may change in later Node versions. The warnings can be silenced using `--disable-warning=ExperimentalWarning`.
