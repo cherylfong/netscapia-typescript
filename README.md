@@ -664,3 +664,26 @@ Node's built-in TypeScript support strips types by removing type annotations and
 The example above is taken from [`/flightdiaries/backend/package.json`](flightdiaries/backend/package.json).
 
 `--experimental-transform-types` is considered an experimental option and its behavior may change in later Node versions. The warnings can be silenced using `--disable-warning=ExperimentalWarning`.
+
+### Importing Other than Code (i.e. JSON Data) as a Module
+
+Suppose JSON data is in a file named `entries.json`:
+
+```json
+[
+  {
+    "id": 1,
+    "test": "test1"
+  },
+  {
+    "id":2,
+    "test": "test2"
+  }
+]
+```
+
+Use this import syntax to import as an ESModule:
+
+```javascript
+import entries from '../data/entries.json' with { type: "json" };
+```
