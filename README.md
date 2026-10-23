@@ -569,6 +569,10 @@ Typescript types are removed at runtime, so ype-only imports must be explicitly 
 > Note that if the asserted type does not have the type appropriate value, this will result in a runtime error!
 > Always validate received data, especially user input.
 
+Never use type assertion unless there is no other way to proceed.
+
+This approach does not use the full power of Typescript but relies on the coder to secure the code.
+
 ## Chapter 4
 
 ⚠️ The Typescript code used in these chapters are not compiled into Javascript due to the `noEmit`set to `true` compiler option.
@@ -676,7 +680,7 @@ Suppose JSON data is in a file named `entries.json`:
     "test": "test1"
   },
   {
-    "id":2,
+    "id": 2,
     "test": "test2"
   }
 ]
@@ -685,5 +689,28 @@ Suppose JSON data is in a file named `entries.json`:
 Use this import syntax to import as an ESModule:
 
 ```javascript
-import entries from '../data/entries.json' with { type: "json" };
+import entries from "../data/entries.json" with { type: "json" };
+```
+
+### Type Only Imports
+
+An example of a [type import](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-8.html#type-only-imports-and-export):
+
+```typescript
+import type { SomeType } from "../types.ts";
+```
+
+Typescript's type information is stripped at runtime when ran directly with Node.js.
+
+Javascript's runtime will fail when it attempts to resolve type definitions such as interfaces or type alias if not explicitly stated as types.
+
+Using import type tells both the TypeScript compiler and the runtime transform that this import exists purely for type-checking and should be erased before execution.
+
+A ESLint rule such as [consistent-type-imports](https://typescript-eslint.io/rules/consistent-type-imports/) can pick out type import omissions in code.
+
+```json
+  rules: {
+    // ...
+    "@typescript-eslint/consistent-type-imports": "error",
+  },
 ```
