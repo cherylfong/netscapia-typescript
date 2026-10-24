@@ -714,3 +714,28 @@ A ESLint rule such as [consistent-type-imports](https://typescript-eslint.io/rul
     "@typescript-eslint/consistent-type-imports": "error",
   },
 ```
+
+### Request and Response Types
+
+```typescript
+Response<any, Record<string, any>, number>;
+```
+
+`Response` and `Request` are [generic type](https://www.typescriptlang.org/docs/handbook/2/generics.html#generic-types).
+
+```typescript
+interface Response<
+  ResBody = any,
+  Locals extends Record<string, any> = Record<string, any>,
+> extends core.Response<ResBody, Locals> {}
+```
+
+```typescript
+export interface Request<
+    P = ParamsDictionary,
+    ResBody = any,
+    ReqBody = any,
+    ReqQuery = ParsedQs,
+    LocalsObj extends Record<string, any> = Record<string, any>,
+> extends http.IncomingMessage, Express.Request { //...
+```
