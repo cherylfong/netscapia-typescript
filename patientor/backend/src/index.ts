@@ -1,4 +1,5 @@
 import express from "express";
+import diagnosesRouter from "./routes/diagnoses.ts";
 
 const app = express();
 app.use(express.json());
@@ -14,6 +15,8 @@ app.get("/api/patients", (_req, res) => {
   console.log("placeholder for /api/patients");
   res.send("needs implementation");
 });
+
+app.use("/api/diagnoses", diagnosesRouter);
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
