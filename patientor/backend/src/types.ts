@@ -20,6 +20,10 @@ export const NewPatientSchema = z.object({
 
 export type NewPatientEntry = z.infer<typeof NewPatientSchema>;
 
+export type PatientEntry = NewPatientEntry;
+
+export type NonSensitivePatientEntry = Omit<PatientEntry, 'ssn'>;
+
 export const NewDiagnosesSchema = z.object({
   code: z.string(),
   name: z.string(),

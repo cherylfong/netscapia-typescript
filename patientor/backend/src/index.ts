@@ -1,5 +1,6 @@
 import express from "express";
 import diagnosesRouter from "./routes/diagnoses.ts";
+import patientsRouter from "./routes/patients.ts";
 
 const app = express();
 app.use(express.json());
@@ -11,10 +12,7 @@ app.get("/api/ping", (_req, res) => {
   res.send("pong");
 });
 
-app.get("/api/patients", (_req, res) => {
-  console.log("placeholder for /api/patients");
-  res.send("needs implementation");
-});
+app.use("/api/patients", patientsRouter);
 
 app.use("/api/diagnoses", diagnosesRouter);
 
