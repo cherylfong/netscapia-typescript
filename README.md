@@ -247,7 +247,7 @@ The type for `error` in the try-catch block i.e. `catch (error) {}` is the type 
 
 Anything can be assigned as `unknown`. However, `unknown` can only be assigned to the same type `unknown`.
 
-`unknown` can be assigned to the type `any` if and only if there is no type assertion or a control flow-based type narrowing.
+[`unknown`](https://www.typescriptlang.org/docs/handbook/2/functions.html#unknown) can be assigned to the type `any` if and only if there is no type assertion or a control flow-based type narrowing.
 
 Type narrowing for error can be done with the `instanceOf` keyword:
 
@@ -259,6 +259,8 @@ catch (error: unknown) {
    // the type is narrowed and we can refer to error.message
     errorMessage += error.message;
 ```
+
+A good use case for the type `unknown` is using it to receive data and then verifying the type later.
 
 ### Command Line Arguments
 
