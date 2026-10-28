@@ -741,3 +741,148 @@ export interface Request<
     LocalsObj extends Record<string, any> = Record<string, any>,
 > extends http.IncomingMessage, Express.Request { //...
 ```
+
+### Custom Type Guards
+
+A [type guard](https://www.typescriptlang.org/docs/handbook/2/narrowing.html#using-type-predicates) is a function that returns a type predicate. It offers more direction control, it is considered a kind of [Type Narrowing](https://www.typescriptlang.org/docs/handbook/2/narrowing.html).
+
+For example:
+
+```typescript
+function isFish(pet: Fish | Bird): pet is Fish {
+  return (pet as Fish).swim !== undefined;
+}
+```
+
+`pet is Fish` is our type predicate in this example.
+
+A predicate takes the form "`parameterName` is Type", where `parameterName` must be the name of a parameter from the current function signature.
+
+Any time `isFish` is called with some variable, TypeScript will narrow that variable to that specific type if the original type is compatible.
+
+Using `isFish` function:
+
+```typescript
+// Both calls to 'swim' and 'fly' are now okay.
+let pet = getSmallPet();
+
+if (isFish(pet)) {
+  pet.swim();
+} else {
+  pet.fly();
+}
+```
+
+This example determines if the `text` is a primitive string or a String object.
+
+```typescript
+const isString = (text: unknown): text is string => {
+  return typeof text === "string" || text instanceof String;
+};
+```
+
+```typescript
+const a = "I'm a string primitive";
+const b = new String("I'm a String Object");
+typeof a; // returns 'string'
+typeof b; // returns 'object'
+a instanceof String; // returns false
+b instanceof String; // returns true
+```
+
+### `const` Object
+
+Is similar to a Typescript `enum` construct.
+
+Setting a variable `as const` gives it `readonly` properties.
+
+```typescript
+// Type '"hello"'
+let x = "hello" as const;
+// Type 'readonly [10, 20]'
+let y = [10, 20] as const;
+// Type '{ readonly text: "hello" }'
+let z = { text: "hello" } as const;
+```
+
+[Reference](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-4.html#const-assertions) for the above code snippet.
+
+The example below is the enum-like pattern in plain Javascript in lieu of using Typescript's [enum](https://www.typescriptlang.org/docs/handbook/enums.html) construct:
+
+```typescript
+export const WeatherConditions = {
+  Sunny: "sunny",
+  Rainy: "rainy",
+  Cloudy: "cloudy",
+  Stormy: "stormy",
+  Windy: "windy",
+} as const;
+
+export type Weather =
+  (typeof WeatherConditions)[keyof typeof WeatherConditions];
+```
+
+- `typeof` - provides the type of an object.
+- `keyof typeof WeatherConditions` - extracts all keys from the object whose type is `WeatherConditions` as a union e.g. `'Sunny' | 'Rainy' | 'Cloudy' | 'Stormy' | 'Windy'`.
+- `typeof WeatherConditions[ ]` - looks up the value of the keys and unions them e.g. `'sunny' | 'rainy' | 'cloudy' | 'stormy' | 'windy'` which are string literals.
+
+The above example can also be used in place of type aliases.
+
+Note that both a const object and a type can be defined with the same name. TypeScript allows this because they live in separate namespaces.
+
+[Example](https://www.w3schools.com/typescript/typescript_aliases_and_interfaces.php) type aliases:
+
+Type Aliases:
+
+```typescript
+type Animal = { name: string };
+type Bear = Animal & { honey: boolean };
+const bear: Bear = { name: "Winnie", honey: true };
+
+type Status = "success" | "error";
+let response: Status = "success";
+```
+
+A type guard for `Weather` for be written as:
+
+```typescript
+const isWeather = (param: string): param is Weather => {
+  return (Object.values(WeatherConditions) as string[]).includes(param);
+};
+```
+
+The type `WeatherConditions` can be used in the following ways:
+
+```typescript
+const x: WeatherConditions = "windy";
+const y: WeatherConditions = WeatherConditions.ok;
+```
+
+### `in` Operator Narrowing
+
+To determine if an object or its prototype chain has a property with specific name.
+
+`"value" in x` - `value` is a string literal and `x` is a union type.
+
+```typescript
+
+type Fish = { swim: () => void };
+type Bird = { fly: () => void };
+type Human = { swim?: () => void; fly?: () => void };
+
+function move(animal: Fish | Bird | Human) {
+  if ("swim" in animal) { // optional or required property
+
+    animal;
+
+// the parameter animal could be the type Fish or Human
+
+  } else { // optional or missing property
+
+    animal;
+
+// the parameter animal could be the type Bird or Human
+}
+```
+
+[Reference for the code above](https://www.typescriptlang.org/docs/handbook/2/narrowing.html#the-in-operator-narrowing).
