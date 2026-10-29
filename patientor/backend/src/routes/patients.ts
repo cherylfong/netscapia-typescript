@@ -1,6 +1,6 @@
-import express, { type Response } from "express";
+import express, { type Response, type Request } from "express";
 import patientsService from "../services/patientsService.ts";
-import { type NonSensitivePatientEntry } from "../types.ts";
+import { type NonSensitivePatientEntry, type NewPatientEntry, type PatientEntry } from "../types.ts";
 
 const router = express.Router();
 
@@ -18,5 +18,11 @@ router.get("/:id", (req, res) => {
     res.sendStatus(404);
   }
 });
+
+router.post('/', (req: Request<unknown, unknown, NewPatientEntry>, res: Response<PatientEntry> ) => {
+  const newPatient : PatientEntry = patientsService.addPatient(req.body);
+  res.json(newPatient);
+});
+
 
 export default router;

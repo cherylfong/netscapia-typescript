@@ -9,7 +9,6 @@ export const Gender = {
 export type Gender = (typeof Gender)[keyof typeof Gender];
 
 export const NewPatientSchema = z.object({
-  id: z.string(),
   name: z.string(),
   dateOfBirth: z.iso.date(),
   ssn: z.string(),
@@ -20,7 +19,7 @@ export const NewPatientSchema = z.object({
 
 export type NewPatientEntry = z.infer<typeof NewPatientSchema>;
 
-export type PatientEntry = NewPatientEntry;
+export type PatientEntry = NewPatientEntry & { id: string};
 
 export type NonSensitivePatientEntry = Omit<PatientEntry, 'ssn'>;
 
