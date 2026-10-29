@@ -14,7 +14,6 @@ export const NewPatientSchema = z.object({
   ssn: z.string(),
   gender: z.enum(Gender),
   occupation: z.string(),
-  latin: z.string().optional(),
 });
 
 export type NewPatientEntry = z.infer<typeof NewPatientSchema>;
