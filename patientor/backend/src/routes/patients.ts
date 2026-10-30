@@ -5,7 +5,7 @@ import {
   type NewPatientEntry,
   type PatientEntry,
 } from "../types.ts";
-import parseNewPatientAddition from "../utils.ts";
+import { newPatientParser, errorMiddleware } from "../middleware.ts";
 
 const router = express.Router();
 
@@ -24,48 +24,38 @@ router.get("/:id", (req, res) => {
   }
 });
 
-router.post(
-  "/",
-  (req: Request<unknown, unknown, unknown>, res, next) => {
-    const body = req.body;
+router.post("/", (req: Request<unknown, unknown, unknown>, res, next) => {
+  const body = req.body;
 
-    const isEmpty =
-      body === undefined ||
-      body === null ||
-      (typeof body === "object" &&
-        !Array.isArray(body) &&
-        Object.keys(body).length === 0);
+  const isEmpty =
+    body === undefined ||
+    body === null ||
+    (typeof body === "object" &&
+      !Array.isArray(body) &&
+      Object.keys(body).length === 0);
 
-    if (isEmpty) {
-      res.status(400).send(
-        "Request body empty, this endpoint is to add a new patient",
-      );
-      return;
-    }
+  if (isEmpty) {
+    res
+      .status(400)
+      .send("Request body empty, this endpoint is to add a new patient");
+    return;
+  }
 
-    next("route"); // use the next router.post function
-  },
-);
+  next("route"); // use the next router.post function
+});
 
 router.post(
   "/",
+  newPatientParser,
   (
     req: Request<unknown, unknown, NewPatientEntry>,
-    res: Response<PatientEntry | string>,
+    res: Response<PatientEntry>,
   ) => {
-    try {
-      const parsedData = parseNewPatientAddition(req.body);
-
-      const newPatient: PatientEntry = patientsService.addPatient(parsedData);
-
-      res.json(newPatient);
-    } catch (error: unknown) {
-      const errorMessage =
-        error instanceof Error ? error.message : "something went wrong";
-
-      res.status(400).send(errorMessage);
-    }
+    const newPatient = patientsService.addPatient(req.body);
+    res.json(newPatient);
   },
 );
+
+router.use(errorMiddleware);
 
 export default router;
