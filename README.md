@@ -886,3 +886,39 @@ function move(animal: Fish | Bird | Human) {
 ```
 
 [Reference for the code above](https://www.typescriptlang.org/docs/handbook/2/narrowing.html#the-in-operator-narrowing).
+
+## Chapter 5 | React with Typescript
+
+The purpose of using Typescript for frontend development:
+
+1. Enforce passing required props to a component.
+2. Enforce passing props of correct type to a component.
+3. Warn if passing unnecessary propers to a component.
+
+Violations to 1. to 3. can caught in the editor (during editing).
+
+### Using Vite with Typescript
+
+Command to create React Typescript project using Vite's React Typescript template:
+
+```bash
+npm create vite@latest my-app-name -- --template react-ts
+```
+
+See [`/chapter-5`](/chapter-5/) directory.
+
+1. Install packages with `npm install` from within the `my-app-name` directory. May have to run `npm install --legacy-peer-deps` because of ESLint's [requirement for Typescript 6](#development-setup-to-prevent-usage-of-the-type-any).
+
+2. Run the frontend in dev mode using `npm run dev`.
+
+### Typescript For React Nuances in the Project Setup
+
+In [`tsconfig.app.json`](/chapter-5/tsconfig.app.json), the `DOM` in the line `"lib": ["ES2023", "DOM", "DOM.Iterable"],` adds type definitions for browser environment APIs such as document.
+
+There is a `!` in the line `ReactDOM.createRoot(document.getElementById('root')!).render(` inside of [`main.tsx`](/chapter-5/src/main.tsx).
+
+`ReactDOM.createRoot` does not accept `null` as a parameter. `!` is used to a type assertion, to assert that the value is not `null`.
+
+Chapter 3's material [warned](https://courses.mooc.fi/org/uh-cs/courses/full-stack-open-typescript/chapter-3) of type assertion risks.
+
+In this case, the assertion is suitable as [`index.html`](/chapter-5/index.html) has the `div` element of `id=root` verbosely written.
