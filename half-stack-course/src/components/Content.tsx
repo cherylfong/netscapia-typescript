@@ -1,14 +1,6 @@
-import { type CoursePartsProp } from "../types";
+import { type ContentProp } from "../types";
+import { Part } from "./Part";
 
-export const Content = ({ courseParts }: CoursePartsProp) => {
-  return (
-    <>
-      {courseParts.map((p) => (
-        <p>
-          {" "}
-          {p.name} {p.exerciseCount}{" "}
-        </p>
-      ))}
-    </>
-  );
+export const Content = ({ courseParts }: ContentProp) => {
+  return <Part courseParts={courseParts} />;
 };
