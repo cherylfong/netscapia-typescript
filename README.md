@@ -922,3 +922,33 @@ There is a `!` in the line `ReactDOM.createRoot(document.getElementById('root')!
 Chapter 3's material [warned](https://courses.mooc.fi/org/uh-cs/courses/full-stack-open-typescript/chapter-3) of type assertion risks.
 
 In this case, the assertion is suitable as [`index.html`](/chapter-5/index.html) has the `div` element of `id=root` verbosely written.
+
+### Understanding Typed `useState`
+
+The alias of `useState("")` explained.
+
+Consider the form `functionName(parameters): return_value`.
+
+The alias is defined below:
+
+```typescript
+useState<string>(initialState: string | (() => string)):
+  [string, React.Dispatch<React.SetStateAction<string>>]
+```
+
+- The parameter is either a parameter of the type `string` named `initialState` or a function that returns a `string`.
+- The returned array has two elements.
+  - The first element is a type `string`
+  - The second element is `React.Dispatch<React.SetStateAction<string>>`.
+    - It is the type of a React state setter for a string value. It accepts either a new string or an updater function that receives the previous string and returns the next string.
+
+The alias off `useState([])` explained.
+
+Its alias have the same format as `useState("")` however Typescript cannot infer the type of elements that will be stored in the array, i.e., as evident by the use of the type `never[]`.
+
+```typescript
+useState<never[]>(initialState: never[] | (() => never[])):
+  [never[], React.Dispatch<React.SetStateAction<never[]>>]
+```
+
+useState is a [generic function](https://www.typescriptlang.org/docs/handbook/2/generics.html#working-with-generic-type-variables), where the type has to be specified as a type parameter in those cases when the compiler can not infer the type.
