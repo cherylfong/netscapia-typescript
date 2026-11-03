@@ -1,0 +1,35 @@
+{
+  "notes": [
+    {
+      "id": "1",
+      "content": "testing"
+    },
+    {
+      "content": "test 2",
+      "id": "apRG8NuZ6FE"
+    },
+    {
+      "content": "test 3",
+      "id": "-Mxx9Nb9rqY"
+    },
+    {
+      "content": "test 4",
+      "id": "IN1vas4HlCY"
+    },
+    {
+      "content": "test 5",
+      "id": "9J_x3vFRZZc"
+    },
+    {
+      "content": "hello",
+      "id": "qAAYfy2tjuM"
+    }
+  ],
+  "example": [
+    {
+      "id": "0",
+      "text": "dummy"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}

@@ -1,20 +1,30 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { type Note } from "./types";
+import noteService from "./noteService";
 
 function App() {
   const [noteValue, setNoteValue] = useState("");
-  const [notes, setNotes] = useState<Note[]>([{ id: "1", content: "testing" }]);
+  const [notes, setNotes] = useState<Note[]>([]);
+
+  useEffect(() => {
+    noteService.getAll().then((initialNotes) => {
+      setNotes(initialNotes);
+    });
+  }, []);
 
   const noteAddition = (event: React.SyntheticEvent) => {
     event.preventDefault();
 
-    const noteToAdd = {
-      content: noteValue,
-      id: String(notes.length + 1)
-    }
-    setNotes(notes.concat(noteToAdd));
-    setNoteValue('')
+    // const noteToAdd = {
+    //   content: noteValue,
+    //   id: String(notes.length + 1)
+    // }
+    // setNotes(notes.concat(noteToAdd));
 
+    noteService.add({ content: noteValue }).then((returnedNote) => {
+      setNotes(notes.concat(returnedNote));
+    });
+    setNoteValue("");
   };
 
   return (
