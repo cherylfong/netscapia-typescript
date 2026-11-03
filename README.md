@@ -952,3 +952,5 @@ useState<never[]>(initialState: never[] | (() => never[])):
 ```
 
 useState is a [generic function](https://www.typescriptlang.org/docs/handbook/2/generics.html#working-with-generic-type-variables), where the type has to be specified as a type parameter in those cases when the compiler can not infer the type.
+
+[Reference to help determine the type to use when dealing with React states](https://react-typescript-cheatsheet.netlify.app/).
