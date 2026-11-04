@@ -954,3 +954,37 @@ useState<never[]>(initialState: never[] | (() => never[])):
 useState is a [generic function](https://www.typescriptlang.org/docs/handbook/2/generics.html#working-with-generic-type-variables), where the type has to be specified as a type parameter in those cases when the compiler can not infer the type.
 
 [Reference to help determine the type to use when dealing with React states](https://react-typescript-cheatsheet.netlify.app/).
+
+### Difference between Type Alias or Interface
+
+Objects can be defined using [`interface`(s)](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#interfaces).
+
+```typescript
+interface DiaryEntry {
+  id: number;
+  date: string;
+  weather: Weather;
+  visibility: Visibility;
+  comment?: string;
+}
+```
+
+A similar result can be achieved by defining `DiaryEntry` as a [type alias](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#type-aliases).
+
+```typescript
+type DiaryEntry = {
+  id: number;
+  date: string;
+  weather: Weather;
+  visibility: Visibility;
+  comment?: string;
+};
+```
+
+Type alias or interfaces can be usually used interchangeably.
+
+[Typescript documentation recommends using interfaces](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#differences-between-type-aliases-and-interfaces) in most cases.
+
+> When multiple interfaces are defined with the same name, its properties/attributes will be merged as one.
+>
+> However, multiple types with the same name will result in error as there can only be unique named types.
