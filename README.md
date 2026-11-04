@@ -988,3 +988,18 @@ Type alias or interfaces can be usually used interchangeably.
 > When multiple interfaces are defined with the same name, its properties/attributes will be merged as one.
 >
 > However, multiple types with the same name will result in error as there can only be unique named types.
+
+**An example when to prefer a type alias over an interface.**
+
+Typescript does not support defining an interface directly as a union.
+
+Hence, use a type alias when defining a union, such as the allowed weather values for a diary entry.
+
+```typescript
+type Weather = "sunny" | "rainy" | "cloudy";
+
+const today: Weather = "sunny"; // Valid
+const tomorrow: Weather = "snowy"; // Error
+```
+
+Weather represents a choice between specific string values. An interface describes an object’s structure and cannot directly define this union.
