@@ -1003,3 +1003,60 @@ const tomorrow: Weather = "snowy"; // Error
 ```
 
 Weather represents a choice between specific string values. An interface describes an object’s structure and cannot directly define this union.
+
+### Branded String Example
+
+```typescript
+declare const isoDateBrand: unique symbol;
+```
+
+- `unique` symbol gives the marker its own distinct identity.
+- `declare` tells TypeScript this name exists for type checking; it generates no JavaScript variable.
+
+```typescript
+export type IsoDate = string & {
+  readonly [isoDateBrand]: true;
+};
+```
+
+- `string & { ... }` combines a string with a required marker.
+- `isoDateBrand` identifies the marker’s key.
+- `[isoDateBrand]` uses that unique symbol as the marker’s property key.
+- `true` is the marker’s exact type.
+- `readonly` prevents assigning to the marker through this type.
+
+> `IsoDate` is the complete type: a string carrying that marker in TypeScript’s type system.
+
+Consequently, ordinary strings cannot be assigned directly:
+
+```typescript
+const date: IsoDate = "2026-11-06";
+// Error: the string lacks the marker
+```
+
+The `isIsoDate` function validates a string and tells TypeScript to treat it as IsoDate when validation succeeds.
+
+```typescript
+export function isIsoDate(value: string): value is IsoDate {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+
+  const date = new Date(value);
+
+  return (
+    !Number.isNaN(date.getTime()) &&
+    date.toISOString().slice(0, 10) === value
+  );
+}
+```
+
+Assignment through successful validation can look like this.
+
+```typescript
+const input: string = "2026-11-06";
+
+if (isIsoDate(input)) {
+  const date: IsoDate = input; // OK
+}
+```
+
+The `[IsoDateBrand]`, i.e.the marker, exists only in the type system. Nothing gets attached to the string at runtime. The validation function performs the actual date check; the brand records that check in the type.
