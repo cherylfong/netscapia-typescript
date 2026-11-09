@@ -6,13 +6,22 @@ This is [part 9 of the fullstack open course](https://fullstackopen.com/en/part9
 
 ### Github Actions Test Status
 
-Branches `chapter-2` do not have triggered tests through GitHub workflow actions. There is no `chapter-1` branch.
+Branches `chapter-2` and `chapter-5` do not have triggered tests through GitHub workflow actions. There is no `chapter-1` branch.
 
-<!-- <details>
+<details>
 <summary> chapter-4 </summary>
 
+[![Patientor API Tests](https://github.com/cherylfong/netscapia-typescript/actions/workflows/patientor-api-tests.yml/badge.svg?branch=chapter-4)](https://github.com/cherylfong/netscapia-typescript/actions/workflows/patientor-api-tests.yml)
+
 </details>
-<br/> -->
+<br/>
+
+<details>
+<summary> chapter-3 </summary>
+
+[![Health app E2E Tests](https://github.com/cherylfong/netscapia-typescript/actions/workflows/healthapp-e2e-tests.yml/badge.svg)](https://github.com/cherylfong/netscapia-typescript/actions/workflows/healthapp-e2e-tests.yml)
+
+</details>
 
 ## Chapter 2 | Background and Introduction
 
@@ -1043,8 +1052,7 @@ export function isIsoDate(value: string): value is IsoDate {
   const date = new Date(value);
 
   return (
-    !Number.isNaN(date.getTime()) &&
-    date.toISOString().slice(0, 10) === value
+    !Number.isNaN(date.getTime()) && date.toISOString().slice(0, 10) === value
   );
 }
 ```
