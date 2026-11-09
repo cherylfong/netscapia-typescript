@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { isIsoDate, isWeather, isVisibility } from "../types";
+import { isIsoDate, isWeather, Weather, isVisibility, Visibility } from "../types";
 import diaryService from "../diaryService";
 
 interface DiaryFormProps {
@@ -21,7 +21,9 @@ export const DiaryForm = ({ onEntryAdded }: DiaryFormProps) => {
 
     if (!isIsoDate(dateValue)) {
       setAddSuccess(false);
-      setNotifyMessage(`Error: Incorrect date: ${dateValue}: date is not ISO date format.`);
+      setNotifyMessage(
+        `Error: Incorrect date: "${dateValue}": date is not ISO date format.`,
+      );
       setDateValue("");
       return;
     }
@@ -29,7 +31,7 @@ export const DiaryForm = ({ onEntryAdded }: DiaryFormProps) => {
     if (!isVisibility(visibilityValue)) {
       setAddSuccess(false);
       setNotifyMessage(
-        `Error: Incorrect visibility: ${visibilityValue}: must be one of the following: great, good, ok, poor.`,
+        `Error: Incorrect visibility: "${visibilityValue}": must be one of the following: great, good, ok, poor.`,
       );
       setVisibilityValue("");
       return;
@@ -38,12 +40,11 @@ export const DiaryForm = ({ onEntryAdded }: DiaryFormProps) => {
     if (!isWeather(weatherValue)) {
       setAddSuccess(false);
       setNotifyMessage(
-        `Error: Incorrect weather: ${weatherValue}: must be one of the following: sunny, rainy, cloudy, stormy, windy.`,
+        `Error: Incorrect weather: "${weatherValue}": must be one of the following: sunny, rainy, cloudy, stormy, windy.`,
       );
       setWeatherValue("");
       return;
     }
-
 
     try {
       await diaryService.add({
@@ -95,27 +96,40 @@ export const DiaryForm = ({ onEntryAdded }: DiaryFormProps) => {
           value={dateValue}
           onChange={(event) => setDateValue(event.target.value)}
         />
-        <br />
 
-        <label htmlFor="visibility">visibility</label>
-        <input
-          type="text"
-          id="visibility"
-          name="visibility"
-          value={visibilityValue}
-          onChange={(event) => setVisibilityValue(event.target.value)}
-        />
-        <br />
+        <div>
+          visibility
+          {Object.values(Visibility).map((visibility) => (
+            <span key={visibility}>
+              <input
+                type="radio"
+                id={`visibility-${visibility}`}
+                name="visibility"
+                value={visibility}
+                checked={visibilityValue === visibility}
+                onChange={() => setVisibilityValue(visibility)}
+              />
+              <label htmlFor={`visibility-${visibility}`}>{visibility}</label>
+            </span>
+          ))}
+        </div>
 
-        <label htmlFor="weather">weather</label>
-        <input
-          type="text"
-          id="weather"
-          name="weather"
-          value={weatherValue}
-          onChange={(event) => setWeatherValue(event.target.value)}
-        />
-        <br />
+        <div>
+          weather
+          {Object.values(Weather).map((weather) => (
+            <span key={weather}>
+              <input
+                type="radio"
+                id={`weather-${weather}`}
+                name="weather"
+                value={weather}
+                checked={weatherValue === weather}
+                onChange={() => setWeatherValue(weather)}
+              />
+              <label htmlFor={`weather-${weather}`}>{weather}</label>
+            </span>
+          ))}
+        </div>
 
         <label htmlFor="comment">comment</label>
         <input
