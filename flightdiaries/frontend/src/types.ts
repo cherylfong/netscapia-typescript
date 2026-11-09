@@ -8,6 +8,10 @@ export const Weather = {
 
 export type Weather = (typeof Weather)[keyof typeof Weather];
 
+export const isWeather = (param: string): param is Weather => {
+  return (Object.values(Weather) as string[]).includes(param);
+};
+
 export const Visibility = {
   Great: "great",
   Good: "good",
@@ -16,6 +20,10 @@ export const Visibility = {
 } as const;
 
 export type Visibility = (typeof Visibility)[keyof typeof Visibility];
+
+export const isVisibility = (param: string): param is Visibility => {
+  return (Object.values(Visibility) as string[]).includes(param);
+};
 
 // branded string
 declare const isoDateBrand: unique symbol;
