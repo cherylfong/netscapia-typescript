@@ -1068,3 +1068,22 @@ if (isIsoDate(input)) {
 ```
 
 The `[IsoDateBrand]`, i.e.the marker, exists only in the type system. Nothing gets attached to the string at runtime. The validation function performs the actual date check; the brand records that check in the type.
+
+## Chapter 6 | Approach to Working with Existing Javascript/Typescript Codebase
+
+Steps:
+
+1. Familiarize with project conventions and structure.
+1. Read the root README.md (if one exists).
+1. Glance at `package.json`
+1. Verify functional development environment.
+1. Browse folder structure to learn about application's functionality and architecture used.
+1. Understand how project code is organized.
+1. Be aware of types used.
+1. Look for unit, integration, end-to-end tests (help when refactoring code).
+
+Tips:
+
+1. Practice reading other's code.
+1. Understanding a new code base requires re-reading code.
+1. You are likely going to read more code than actually producing code in a life time.
