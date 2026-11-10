@@ -1073,17 +1073,17 @@ The `[IsoDateBrand]`, i.e.the marker, exists only in the type system. Nothing ge
 
 Steps:
 
-1. Familiarize with project conventions and structure.
+1. Familiarize with the project's conventions and structure.
 1. Read the root README.md (if one exists).
 1. Glance at `package.json`
-1. Verify functional development environment.
-1. Browse folder structure to learn about application's functionality and architecture used.
-1. Understand how project code is organized.
+1. Setup a functional development environment for the codebase.
+1. Browse project directory structure to learn about application's functionality and architecture used.
+1. Understand how the project's code is organized.
 1. Be aware of types used.
-1. Look for unit, integration, end-to-end tests (help when refactoring code).
+1. Look for unit, integration, end-to-end tests (helpful when refactoring code).
 
 Tips:
 
-1. Practice reading other's code.
-1. Understanding a new code base requires re-reading code.
-1. You are likely going to read more code than actually producing code in a life time.
+1. Practice reading code written by others.
+1. Understanding a new codebase requires re-reading the codebase.
+1. You are likely going to read more code than produce code in your life time.
