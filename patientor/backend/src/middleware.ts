@@ -8,7 +8,7 @@ export const newPatientParser = (
   next: NextFunction,
 ) => {
   try {
-    NewPatientSchema.parse(req.body);
+    req.body = NewPatientSchema.parse(req.body);
     next();
   } catch (error: unknown) {
     next(error);
