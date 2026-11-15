@@ -1087,3 +1087,28 @@ Tips:
 1. Practice reading code written by others.
 1. Understanding a new codebase requires re-reading the codebase.
 1. You are likely going to read more code than produce code in your life time.
+
+### The Purpose of `NewPatientSchema.pasrse` and `parseNewPatientAddition`
+
+Both validate input and return a `NewPatientEntry`.
+
+However, their implementations differ which mean that their validation criteria are also different.
+
+| Check                       | `parseNewPatientAddition`                                  | `NewPatientSchema.parse`                        |
+| --------------------------- | ---------------------------------------------------------- | ----------------------------------------------- |
+| Empty name, SSN, occupation | Rejects `""`                                               | Accepts `""` with `z.string()`                  |
+| Birth date                  | Converts to string and checks `Date.parse()`               | Requires a valid `YYYY-MM-DD` string            |
+| Invalid input               | Throws a regular `Error`                                   | Throws a `ZodError`, handled by your middleware |
+| Extra fields inside entries | Preserves them because `safeParse()` results are discarded | Removes unrecognized fields by default          |
+
+Zod supports `.min(1)` for nonempty strings and strips unknown object fields by default. [See the Zod schema documentation](https://zod.dev/api).
+
+It possible to condense the function `parseNewPatientAddition` in [`patientor/backend/src/utils`](patientor/backend/src/utils.ts) into the following:
+
+```typescript
+const parseNewPatientAddition = (object: unknown): NewPatientEntry => {
+  return NewPatientSchema.parse(object);
+};
+```
+
+Use to this [specific point in the commit history](https://github.com/cherylfong/netscapia-typescript/commit/53908c35ca46f5a2db5486f30c187d4480111e72) to refer to the functions `parseNewPatientAddition` in `utils.ts` and `NewPatientSchema.parse` which is used within `newPatientParser` of `middleware.ts` mentioned in this section.
