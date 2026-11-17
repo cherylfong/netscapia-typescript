@@ -1,37 +1,5 @@
 import { z } from "zod";
 
-export const Gender = {
-  Female: "female",
-  Male: "male",
-  Other: "other",
-} as const;
-
-export type Gender = (typeof Gender)[keyof typeof Gender];
-
-export const PatientLogEntrySchema = z.object({
-  description: z.string(),
-  creationDate: z.iso.date(),
-  createdBy: z.string(),
-  diagnosisCode: z.string(),
-});
-
-export type PatientLogEntry = z.infer<typeof PatientLogEntrySchema>;
-
-export const NewPatientSchema = z.object({
-  name: z.string(),
-  dateOfBirth: z.iso.date(),
-  ssn: z.string(),
-  gender: z.enum(Gender),
-  occupation: z.string(),
-  entries: z.array(PatientLogEntrySchema),
-});
-
-export type NewPatientEntry = z.infer<typeof NewPatientSchema>;
-
-export type PatientEntry = NewPatientEntry & { id: string };
-
-export type NonSensitivePatientEntry = Omit<PatientEntry, "ssn">;
-
 export const NewDiagnosesSchema = z.object({
   code: z.string(),
   name: z.string(),
@@ -43,3 +11,84 @@ export type NewDiagnosesEntry = z.infer<typeof NewDiagnosesSchema>;
 export interface DiagnosesEntry extends NewDiagnosesEntry {
   id: number;
 }
+
+export const PatientLogEntrySchema = z.object({
+  id: z.string(),
+  date: z.iso.date(),
+  specialist: z.string(),
+  description: z.string(),
+  diagnosisCodes: z.array(NewDiagnosesSchema.shape.code).optional(),
+});
+
+export type PatientLogEntry = z.infer<typeof PatientLogEntrySchema>;
+
+const PatientLogLiteralType = {
+  HealthCheck: "HealthCheck",
+  Hospital: "Hospital",
+  OccupationalHealthcare: "OccupationalHealthcare",
+} as const;
+
+const HealthCheckRating = {
+  Healthy: 0,
+  LowRisk: 1,
+  HighRisk: 2,
+  CriticalRisk: 3,
+} as const;
+
+type HealthCheckRating =
+  (typeof HealthCheckRating)[keyof typeof HealthCheckRating];
+
+const HealthCheckEntryPatientLogSchema = z.object({
+  type: z.literal(PatientLogLiteralType.HealthCheck),
+  healthCheckRating: z.enum(HealthCheckRating),
+});
+
+const HospitalEntryPatientLogSchema = z.object({
+  type: z.literal(PatientLogLiteralType.Hospital),
+  discharge: z.object({
+    date: z.iso.date(),
+    criteria: z.string(),
+  }),
+});
+
+const OccupationalHealthcarePatientLogSchema = z.object({
+  type: z.literal(PatientLogLiteralType.OccupationalHealthcare),
+  employerName: z.string(),
+  sickLeave: z
+    .object({
+      startDate: z.iso.date(),
+      endDate: z.iso.date(),
+    })
+    .optional(),
+});
+
+export const PatientLogTypeSchema = z.discriminatedUnion("type", [
+  PatientLogEntrySchema.extend(HealthCheckEntryPatientLogSchema.shape),
+  PatientLogEntrySchema.extend(HospitalEntryPatientLogSchema.shape),
+  PatientLogEntrySchema.extend(OccupationalHealthcarePatientLogSchema.shape),
+]);
+
+export type PatientLogType = z.infer<typeof PatientLogTypeSchema>;
+
+export const Gender = {
+  Female: "female",
+  Male: "male",
+  Other: "other",
+} as const;
+
+export type Gender = (typeof Gender)[keyof typeof Gender];
+
+export const NewPatientSchema = z.object({
+  name: z.string(),
+  dateOfBirth: z.iso.date(),
+  ssn: z.string(),
+  gender: z.enum(Gender),
+  occupation: z.string(),
+  entries: z.array(PatientLogTypeSchema),
+});
+
+export type NewPatientEntry = z.infer<typeof NewPatientSchema>;
+
+export type PatientEntry = NewPatientEntry & { id: string };
+
+export type NonSensitivePatientEntry = Omit<PatientEntry, "ssn">;

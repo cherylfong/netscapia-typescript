@@ -1,8 +1,14 @@
-import patientEntries from "../../data/patientEntries.ts";
-import type { PatientEntry, NewPatientEntry, NonSensitivePatientEntry } from "../types.ts";
-import { v1 as uuid } from 'uuid';
+import patientFullEntries from "../../data/patientFullEntries.ts";
+import type {
+  PatientEntry,
+  NewPatientEntry,
+  NonSensitivePatientEntry,
+} from "../types.ts";
+import { v1 as uuid } from "uuid";
 
-const patients = patientEntries;
+// const patients = patientEntries;
+
+const patients = patientFullEntries;
 
 const getPatients = (): PatientEntry[] => {
   return patients;
@@ -16,7 +22,7 @@ const getNonSensitivePatientEntries = (): NonSensitivePatientEntry[] => {
       dateOfBirth,
       gender,
       occupation,
-      entries
+      entries,
     }),
   );
 };
@@ -26,8 +32,7 @@ const findById = (id: string): PatientEntry | undefined => {
   return entry;
 };
 
-const addPatient = ( patient: NewPatientEntry ): PatientEntry => {
-
+const addPatient = (patient: NewPatientEntry): PatientEntry => {
   const newPatient: PatientEntry = {
     ...patient,
     id: uuid(),
@@ -40,5 +45,5 @@ export default {
   getPatients,
   getNonSensitivePatientEntries,
   findById,
-  addPatient
+  addPatient,
 };
