@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { type Patient, Gender } from "../types";
+import { type Patient, Gender, type Entry } from "../types";
 import patientService from "../services/patients";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import TransgenderIcon from "@mui/icons-material/Transgender";
 import MaleIcon from "@mui/icons-material/Male";
 import FemaleIcon from "@mui/icons-material/Female";
+import RateReviewIcon from "@mui/icons-material/RateReview";
 
 export const PatientView = () => {
   const patientId: string | undefined = useParams().id;
@@ -60,15 +61,75 @@ export const PatientView = () => {
     switch (gender) {
       case Gender.Female:
         // return "♀️";
-        return <FemaleIcon fontSize="large"/>;
+        return <FemaleIcon fontSize="large" />;
       case Gender.Male:
         // return "♂️";
-        return <MaleIcon fontSize="large"/>;
+        return <MaleIcon fontSize="large" />;
       case Gender.Other:
         // return "⚧️";
-        return <TransgenderIcon fontSize="large"/>;
+        return <TransgenderIcon fontSize="large" />;
       default:
         return "gender unknown";
+    }
+  };
+
+  const printPatientLogEntries = (entry: Entry, idx: number) => {
+    switch (entry.type) {
+      case "HealthCheck":
+        return (
+          <div key={idx}>
+            <p>{entry.date}</p>
+            <p>
+              <i>{entry.description}</i>
+            </p>
+            <p>{entry.healthCheckRating}</p>
+            <p>
+              <RateReviewIcon fontSize="medium" />
+              diagnosed by {entry.specialist}
+            </p>
+          </div>
+        );
+      case "Hospital":
+        return (
+          <div key={idx}>
+            <p>{entry.date}</p>
+            <p>
+              <i>{entry.description}</i>
+            </p>
+            <ul>
+              {entry.diagnosisCodes?.map((code: string) => (
+                <li>{code}</li>
+              ))}
+            </ul>
+            <p>
+              <RateReviewIcon fontSize="medium" />
+              diagnosed by {entry.specialist}
+            </p>
+          </div>
+        );
+      case "OccupationalHealthcare":
+        return (
+          <div key={idx}>
+            <p>
+              {entry.date} {entry.employerName}
+            </p>
+            <p>
+              <i>{entry.description}</i>
+            </p>
+
+            <ul>
+              {entry.diagnosisCodes?.map((code: string) => (
+                <li>{code}</li>
+              ))}
+            </ul>
+            <p>
+              <RateReviewIcon fontSize="medium" />
+              diagnosed by {entry.specialist}
+            </p>
+          </div>
+        );
+      default:
+        return <p>Patient has no entries</p>;
     }
   };
 
@@ -80,6 +141,14 @@ export const PatientView = () => {
       <p>ssn: {patient.ssn} </p>
       <p>occupation: {patient.occupation}</p>
       <p>date of birth: {patient.dateOfBirth}</p>
+      <h3>entries</h3>
+      {patient.entries.length === 0 ? (
+        <p>No entries.</p>
+      ) : (
+        patient.entries.map((entry: Entry, idx: number) =>
+          printPatientLogEntries(entry, idx),
+        )
+      )}
     </>
   );
 };
