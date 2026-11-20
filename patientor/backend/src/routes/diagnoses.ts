@@ -1,19 +1,35 @@
-import express, { type Response } from "express";
+import express from "express";
 import diagnosesService from "../services/diagnosesService.ts";
-import { type DiagnosesEntry } from "../types.ts";
 
 const router = express.Router();
 
-router.get("/", (_req, res: Response<DiagnosesEntry[]>) => {
-  const data = diagnosesService.getDiagnoses();
-  res.send(data);
+router.get("/", (req, res) => {
+  const code = req.query.code;
+
+  if (code === undefined) {
+    res.send(diagnosesService.getDiagnoses());
+    return;
+  }
+
+  if (typeof code !== "string") {
+    res.status(400).send("code must be a string");
+    return;
+  }
+
+  const diagnosis = diagnosesService.findByCode(code);
+
+  if (diagnosis) {
+    res.send(diagnosis);
+  } else {
+    res.sendStatus(404);
+  }
 });
 
 router.get("/:id", (req, res) => {
-  const diagnoses = diagnosesService.findById(Number(req.params.id));
+  const diagnosis = diagnosesService.findById(Number(req.params.id));
 
-  if (diagnoses) {
-    res.send(diagnoses);
+  if (diagnosis) {
+    res.send(diagnosis);
   } else {
     res.sendStatus(404);
   }

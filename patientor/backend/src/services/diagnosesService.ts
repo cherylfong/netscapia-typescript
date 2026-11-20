@@ -12,6 +12,11 @@ const findById = (id: number): DiagnosesEntry | undefined => {
   return entry;
 };
 
+const findByCode = (code: string): DiagnosesEntry | undefined => {  
+  const entry = diagnoses.find(d => d.code === code);  
+  return entry;
+}; 
+
 const addDiagnoses = (entry: NewDiagnosesEntry): DiagnosesEntry => {
 
     const newDiagnoses = {
@@ -26,4 +31,5 @@ export default {
     getDiagnoses,
     addDiagnoses,
     findById,
+    findByCode
 };
