@@ -33,7 +33,7 @@ export interface Entry {
   specialist: string;
   type: string;
   employerName?: string;
-  diagnosisCodes?: string[];
+  diagnosisCodes?: Array<Diagnosis['code']>;
   healthCheckRating?: HealthCheckRating;
 }
 

@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
-import { type Patient, Gender, type Entry } from "../types";
+import { type Patient, Gender, type Entry, type Diagnosis } from "../types";
 import patientService from "../services/patients";
+import diagnosesService from "../services/diagnoses";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
@@ -14,6 +15,7 @@ export const PatientView = () => {
 
   const [patient, setPatient] = useState<Patient | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [diagnoses, setDiagnoses] = useState<Array<Diagnosis> | null>(null);
 
   useEffect(() => {
     // tracks if effect should update component
@@ -25,6 +27,7 @@ export const PatientView = () => {
       // set component to loading state
       setPatient(null);
       setError(null);
+      setDiagnoses(null);
 
       try {
         // pause fetchPatient until promise is returned
@@ -32,11 +35,23 @@ export const PatientView = () => {
         const data = await patientService.getById(patientId);
 
         if (active) setPatient(data);
+
+        const dataDiagnoses: Array<Diagnosis> = [];
+
+        for (const entry of data.entries) {
+          // ?? [] supplies an empty array when diagnosisCodes is undefined.
+          for (const code of entry.diagnosisCodes ?? []) {
+            const diagnosis = await diagnosesService.getByCode(code);
+            dataDiagnoses.push(diagnosis);
+          }
+        }
+
+        if (active) setDiagnoses(dataDiagnoses);
       } catch (e: unknown) {
         if (!active) return;
 
         if (axios.isAxiosError(e) && e.response?.status === 404) {
-          setError("patient does not exists");
+          setError("patient or diagnosis does not exists");
         } else {
           setError("Could not load patient");
         }
@@ -73,6 +88,11 @@ export const PatientView = () => {
     }
   };
 
+  const getDiagnosisCodeDescription = (code: string) => {
+    const result = diagnoses?.find((d) => d.code === code);
+    return result?.name;
+  };
+
   const printPatientLogEntries = (entry: Entry, idx: number) => {
     switch (entry.type) {
       case "HealthCheck":
@@ -98,7 +118,9 @@ export const PatientView = () => {
             </p>
             <ul>
               {entry.diagnosisCodes?.map((code: string) => (
-                <li>{code}</li>
+                <li>
+                  {code} {getDiagnosisCodeDescription(code)}
+                </li>
               ))}
             </ul>
             <p>
@@ -119,7 +141,9 @@ export const PatientView = () => {
 
             <ul>
               {entry.diagnosisCodes?.map((code: string) => (
-                <li>{code}</li>
+                <li>
+                  {code} {getDiagnosisCodeDescription(code)}
+                </li>
               ))}
             </ul>
             <p>
