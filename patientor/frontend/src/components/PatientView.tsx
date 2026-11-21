@@ -1,5 +1,12 @@
 import { useParams } from "react-router-dom";
-import { type Patient, Gender, type Entry, type Diagnosis } from "../types";
+import {
+  type Patient,
+  Gender,
+  type Entry,
+  type Diagnosis,
+  healthCheckRatingLabels,
+  HealthCheckRating,
+} from "../types";
 import patientService from "../services/patients";
 import diagnosesService from "../services/diagnoses";
 import axios from "axios";
@@ -9,6 +16,11 @@ import TransgenderIcon from "@mui/icons-material/Transgender";
 import MaleIcon from "@mui/icons-material/Male";
 import FemaleIcon from "@mui/icons-material/Female";
 import RateReviewIcon from "@mui/icons-material/RateReview";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import WorkIcon from "@mui/icons-material/Work";
+import MedicalServicesIcon from "@mui/icons-material/MedicalServices";
+import AirlineSeatFlatIcon from "@mui/icons-material/AirlineSeatFlat";
 
 export const PatientView = () => {
   const patientId: string | undefined = useParams().id;
@@ -88,21 +100,73 @@ export const PatientView = () => {
     }
   };
 
+  const healthCheckRatingSymbol = (rating: HealthCheckRating | undefined) => {
+    switch (rating) {
+      case HealthCheckRating.Healthy:
+        return (
+          <p>
+            <FavoriteIcon fontSize="medium" sx={{ color: "#2ad590" }} />{" "}
+            {healthCheckRatingLabels[rating]}
+          </p>
+        );
+
+      case HealthCheckRating.LowRisk:
+        return (
+          <p>
+            <FavoriteIcon fontSize="medium" sx={{ color: "#9c56a9" }} />{" "}
+            {healthCheckRatingLabels[rating]}
+          </p>
+        );
+
+      case HealthCheckRating.HighRisk:
+        return (
+          <p>
+            <FavoriteIcon fontSize="medium" sx={{ color: "#d95d26" }} />{" "}
+            {healthCheckRatingLabels[rating]}
+          </p>
+        );
+
+      case HealthCheckRating.CriticalRisk:
+        return (
+          <p>
+            <FavoriteIcon fontSize="medium" sx={{ color: "#e61949" }} />{" "}
+            {healthCheckRatingLabels[rating]}
+          </p>
+        );
+
+      default:
+        <p>
+          <FavoriteBorderIcon fontSize="medium" sx={{ color: "#70828f" }} />{" "}
+          Empty health check rating.
+        </p>;
+    }
+  };
+
   const getDiagnosisCodeDescription = (code: string) => {
     const result = diagnoses?.find((d) => d.code === code);
     return result?.name;
   };
 
+  const patientEntryStyle = {
+    border: "2px solid black",
+    marginTop: "10px",
+    marginBottom: "10px",
+    paddingLeft: "10px",
+    paddingRight: "10px",
+    borderRadius: "12px",
+  };
   const printPatientLogEntries = (entry: Entry, idx: number) => {
     switch (entry.type) {
       case "HealthCheck":
         return (
-          <div key={idx}>
-            <p>{entry.date}</p>
+          <div key={idx} style={patientEntryStyle}>
+            <p>
+              {entry.date} <MedicalServicesIcon />
+            </p>
             <p>
               <i>{entry.description}</i>
             </p>
-            <p>{entry.healthCheckRating}</p>
+            <p>{healthCheckRatingSymbol(entry.healthCheckRating)}</p>
             <p>
               <RateReviewIcon fontSize="medium" />
               diagnosed by {entry.specialist}
@@ -111,8 +175,10 @@ export const PatientView = () => {
         );
       case "Hospital":
         return (
-          <div key={idx}>
-            <p>{entry.date}</p>
+          <div key={idx} style={patientEntryStyle}>
+            <p>
+              {entry.date} <AirlineSeatFlatIcon />
+            </p>
             <p>
               <i>{entry.description}</i>
             </p>
@@ -131,9 +197,9 @@ export const PatientView = () => {
         );
       case "OccupationalHealthcare":
         return (
-          <div key={idx}>
+          <div key={idx} style={patientEntryStyle}>
             <p>
-              {entry.date} {entry.employerName}
+              {entry.date} <WorkIcon /> {entry.employerName}
             </p>
             <p>
               <i>{entry.description}</i>

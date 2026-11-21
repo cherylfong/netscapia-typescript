@@ -21,11 +21,18 @@ export interface Patient {
 }
 
 export enum HealthCheckRating {
-  Healthy = "healthy",
-  LowRisk = "lowRisk",
-  HighRisk = "highRisk",
-  CriticalRisk = "criticalRisk",
+  Healthy = 0,
+  LowRisk = 1,
+  HighRisk = 2,
+  CriticalRisk = 3,
 }
+
+export const healthCheckRatingLabels: Record<HealthCheckRating, string> = {
+  [HealthCheckRating.Healthy]: "healthy",
+  [HealthCheckRating.LowRisk]: "low risk",
+  [HealthCheckRating.HighRisk]: "high risk",
+  [HealthCheckRating.CriticalRisk]: "critical risk",
+};
 
 export interface Entry {
   date: string;
@@ -33,7 +40,7 @@ export interface Entry {
   specialist: string;
   type: string;
   employerName?: string;
-  diagnosisCodes?: Array<Diagnosis['code']>;
+  diagnosisCodes?: Array<Diagnosis["code"]>;
   healthCheckRating?: HealthCheckRating;
 }
 
