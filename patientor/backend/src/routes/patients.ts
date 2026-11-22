@@ -4,8 +4,14 @@ import {
   type NonSensitivePatientEntry,
   type NewPatientEntry,
   type PatientEntry,
+  type PatientLogEntryType,
+  type NewPatientLogEntry,
 } from "../types.ts";
-import { newPatientParser, errorMiddleware } from "../middleware.ts";
+import {
+  newPatientParser,
+  errorMiddleware,
+  newPatientLogEntryParser,
+} from "../middleware.ts";
 
 const router = express.Router();
 
@@ -53,6 +59,21 @@ router.post(
   ) => {
     const newPatient = patientsService.addPatient(req.body);
     res.json(newPatient);
+  },
+);
+
+router.post(
+  "/:id/entries",
+  newPatientLogEntryParser,
+  (
+    req: Request<{ id: string }, unknown, NewPatientLogEntry>,
+    res: Response<PatientLogEntryType>,
+  ) => {
+    const newPatientLogEntry = patientsService.addPatientLogEntry(
+      req.body,
+      String(req.params.id),
+    );
+    res.json(newPatientLogEntry);
   },
 );
 

@@ -13,7 +13,6 @@ export interface DiagnosesEntry extends NewDiagnosesEntry {
 }
 
 export const PatientLogEntrySchema = z.object({
-  id: z.string(),
   date: z.iso.date(),
   specialist: z.string(),
   description: z.string(),
@@ -40,7 +39,12 @@ type HealthCheckRating =
 
 const HealthCheckEntryPatientLogSchema = z.object({
   type: z.literal(PatientLogLiteralType.HealthCheck),
-  healthCheckRating: z.enum(HealthCheckRating),
+  healthCheckRating: z.union([
+    z.literal(HealthCheckRating.Healthy),
+    z.literal(HealthCheckRating.LowRisk),
+    z.literal(HealthCheckRating.HighRisk),
+    z.literal(HealthCheckRating.CriticalRisk),
+  ]),
 });
 
 const HospitalEntryPatientLogSchema = z.object({
@@ -68,7 +72,14 @@ export const PatientLogTypeSchema = z.discriminatedUnion("type", [
   PatientLogEntrySchema.extend(OccupationalHealthcarePatientLogSchema.shape),
 ]);
 
-export type PatientLogType = z.infer<typeof PatientLogTypeSchema>;
+const PatientLogTypeSchemaWithId = z.intersection(
+  PatientLogTypeSchema,
+  z.object({ id: z.string() }),
+);
+
+export type NewPatientLogEntry = z.infer<typeof PatientLogTypeSchema>;
+
+export type PatientLogEntryType = NewPatientLogEntry & { id: string };
 
 export const Gender = {
   Female: "female",
@@ -84,7 +95,7 @@ export const NewPatientSchema = z.object({
   ssn: z.string(),
   gender: z.enum(Gender),
   occupation: z.string(),
-  entries: z.array(PatientLogTypeSchema),
+  entries: z.array(PatientLogTypeSchemaWithId),
 });
 
 export type NewPatientEntry = z.infer<typeof NewPatientSchema>;

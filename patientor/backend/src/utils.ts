@@ -1,7 +1,7 @@
 import {
   Gender,
   type NewPatientEntry,
-  type PatientLogType,
+  type PatientLogEntryType,
   PatientLogTypeSchema,
 } from "./types.ts";
 
@@ -13,7 +13,9 @@ const isString = (text: unknown): text is string => {
   return typeof text === "string" || text instanceof String;
 };
 
-const isPatientLogEntryArray = (array: unknown): array is PatientLogType[] => {
+const isPatientLogEntryArray = (
+  array: unknown,
+): array is PatientLogEntryType[] => {
   return (
     Array.isArray(array) &&
     array.every((item: unknown) => PatientLogTypeSchema.safeParse(item).success)
@@ -61,7 +63,7 @@ const parseOccupation = (job: unknown): string => {
   return job;
 };
 
-const parseEntries = (entries: unknown): PatientLogType[] => {
+const parseEntries = (entries: unknown): PatientLogEntryType[] => {
   if (!entries || !isPatientLogEntryArray(entries)) {
     throw new Error("Incorrect or missing entries");
   }
