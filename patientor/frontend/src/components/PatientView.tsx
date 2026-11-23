@@ -135,10 +135,12 @@ export const PatientView = () => {
         );
 
       default:
-        <p>
-          <FavoriteBorderIcon fontSize="medium" sx={{ color: "#70828f" }} />{" "}
-          Empty health check rating.
-        </p>;
+        return (
+          <p>
+            <FavoriteBorderIcon fontSize="medium" sx={{ color: "#70828f" }} />{" "}
+            Empty health check rating.
+          </p>
+        );
     }
   };
 
