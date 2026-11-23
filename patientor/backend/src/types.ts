@@ -95,7 +95,7 @@ export const NewPatientSchema = z.object({
   ssn: z.string(),
   gender: z.enum(Gender),
   occupation: z.string(),
-  entries: z.array(PatientLogTypeSchemaWithId),
+  entries: z.array(PatientLogTypeSchemaWithId).optional(),
 });
 
 export type NewPatientEntry = z.infer<typeof NewPatientSchema>;
