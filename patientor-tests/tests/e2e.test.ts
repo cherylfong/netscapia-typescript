@@ -65,9 +65,50 @@ test.describe('Adding an entry to a patient', () => {
 
     await page.getByRole('button', { name: 'Add New Entry' }).click();
 
-    await page.getByLabel('Date').fill('2024-03-15');
+    // add missing entry type selection
+    // entry type selection was implemented in exercise 31
+    await page.locator("#entry-type-select").click();
+
+    await page
+      .getByRole("option", {
+        name: "Health Check",
+        exact: true,
+      })
+      .click();
+
+    // exercise 32 changes the date field from manual input to using the date element
+    // await page.getByLabel('Date').fill('2024-03-15');
+    const dateField = page.getByRole("group", {
+      name: "Date",
+      exact: true,
+    });
+    await dateField.click();
+    await dateField
+      .getByRole("spinbutton", { name: "Month", exact: true })
+      .fill("03");
+    await dateField
+      .getByRole("spinbutton", { name: "Day", exact: true })
+      .fill("15");
+    await dateField
+      .getByRole("spinbutton", { name: "Year", exact: true })
+      .fill("2024");
+    await dateField
+      .getByRole("spinbutton", { name: "Year", exact: true })
+      .press("Tab");
+
     await page.getByLabel('Description').fill('Annual checkup, all clear');
     await page.getByLabel('Specialist').fill('Dr. Test Specialist');
+
+    // exercise 32 changes the Health Check Rating field to a dropdown selection
+    // add missing Health Check Rating field input that is required for form submission
+    await page.locator("#entry-health-check-rating").click();
+
+    await page
+      .getByRole("option", {
+        name: "2 - High Risk",
+        exact: true,
+      })
+      .click();
 
     await page.getByRole('button', { name: 'Add' }).click();
 
