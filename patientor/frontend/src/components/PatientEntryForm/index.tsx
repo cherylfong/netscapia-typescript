@@ -1,4 +1,4 @@
-import { Patient } from "../../types";
+
 import { useParams } from "react-router-dom";
 import { useState } from "react";
 
@@ -23,11 +23,7 @@ import { Button } from "@mui/material";
 import type { Dayjs } from "dayjs";
 import Alert from "@mui/material/Alert";
 
-interface Props {
-  patients: Patient[];
-}
-
-export const PatientEntryForm = ({ patients }: Props) => {
+export const PatientEntryForm = () => {
   const patientId: string | undefined = useParams().id;
 
   const [notify, setNotify] = useState("");
