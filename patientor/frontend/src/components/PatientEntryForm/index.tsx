@@ -293,7 +293,7 @@ export const PatientEntryForm = ({ patients }: Props) => {
         {renderEntryFormFields()}
 
         <Button type="submit" variant="contained">
-          Save
+          Add
         </Button>
       </Box>
     </>
