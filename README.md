@@ -4,6 +4,10 @@ This is [part 9 of the fullstack open course](https://fullstackopen.com/en/part9
 
 [New Course Platform for Typescript](https://courses.mooc.fi/org/uh-cs/courses/full-stack-open-typescript/)
 
+### 🏅 Verified Completion
+
+https://courses.mooc.fi/certificates/validate/6kwcpxjedmm8az4
+
 ### Github Actions Test Status
 
 Branches `chapter-2` and `chapter-5` do not have triggered tests through GitHub workflow actions. There is no `chapter-1` branch.
