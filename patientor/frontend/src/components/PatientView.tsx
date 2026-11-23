@@ -22,6 +22,9 @@ import WorkIcon from "@mui/icons-material/Work";
 import MedicalServicesIcon from "@mui/icons-material/MedicalServices";
 import AirlineSeatFlatIcon from "@mui/icons-material/AirlineSeatFlat";
 
+import { Button } from "@mui/material";
+import { Link } from "react-router-dom";
+
 export const PatientView = () => {
   const patientId: string | undefined = useParams().id;
 
@@ -221,7 +224,11 @@ export const PatientView = () => {
           </div>
         );
       default:
-        return <p>Patient has no entries</p>;
+        return (
+          <div>
+            <p>Patient has no entries</p>
+          </div>
+        );
     }
   };
 
@@ -233,7 +240,21 @@ export const PatientView = () => {
       <p>ssn: {patient.ssn} </p>
       <p>occupation: {patient.occupation}</p>
       <p>date of birth: {patient.dateOfBirth}</p>
-      <h3>entries</h3>
+      <div>
+        {" "}
+        <h3>
+          Entries
+          <Button
+            sx={{ left: "50px" }}
+            component={Link}
+            to={`/patients/${patient.id}/new-entry/`}
+            variant="contained"
+            color="primary"
+          >
+            New Entry
+          </Button>
+        </h3>
+      </div>
       {patient.entries.length === 0 ? (
         <p>No entries.</p>
       ) : (

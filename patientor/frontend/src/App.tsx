@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { BrowserRouter as Router, Route, Link, Routes } from "react-router-dom";
+import { Route, Link, Routes, useNavigate } from "react-router-dom";
 import { Button, Divider, Container, Typography } from "@mui/material";
 
 import { apiBaseUrl } from "./constants";
@@ -8,8 +8,8 @@ import { Patient } from "./types";
 
 import patientService from "./services/patients";
 import PatientListPage from "./components/PatientListPage";
-
 import { PatientView } from "./components/PatientView";
+import { PatientEntryForm } from "./components/PatientEntryForm";
 
 const App = () => {
   const [patients, setPatients] = useState<Patient[]>([]);
@@ -24,31 +24,40 @@ const App = () => {
     void fetchPatientList();
   }, []);
 
+  const navigate = useNavigate();
+
   return (
     <div className="App">
-      <Router>
-        <Container>
-          <Typography variant="h3" sx={{ marginBottom: "0.5em" }}>
-            Patientor
-          </Typography>
-          <Button component={Link} to="/" variant="contained" color="primary">
-            Home
-          </Button>
-          <Divider sx={{ marginY: 2 }} />
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <PatientListPage
-                  patients={patients}
-                  setPatients={setPatients}
-                />
-              }
-            />
-            <Route path="/patients/:id" element={<PatientView />} />
-          </Routes>
-        </Container>
-      </Router>
+      <Container>
+        <Typography variant="h3" sx={{ marginBottom: "0.5em" }}>
+          Patientor
+        </Typography>
+        <Button component={Link} to="/" variant="contained" color="primary">
+          Home
+        </Button>
+        <Button
+          onClick={() => navigate(-1)}
+          variant="contained"
+          color="primary"
+          sx={{ left: "20px" }}
+        >
+          Back
+        </Button>
+        <Divider sx={{ marginY: 2 }} />
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <PatientListPage patients={patients} setPatients={setPatients} />
+            }
+          />
+          <Route path="/patients/:id" element={<PatientView />} />
+          <Route
+            path="/patients/:id/new-entry"
+            element={<PatientEntryForm patients={patients} />}
+          />
+        </Routes>
+      </Container>
     </div>
   );
 };
