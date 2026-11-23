@@ -1,6 +1,6 @@
 import { Patient } from "../../types";
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import {
   EntryTypeLiterals,
@@ -43,13 +43,17 @@ export const PatientEntryForm = ({ patients }: Props) => {
 
   // HealthCheck form inputs
   const [healthCheckRating, setHealthCheckRating] = useState<
-    HealthCheckRating | undefined
-  >(undefined);
+    HealthCheckRating | ""
+  >("");
 
   // Hospital form inputs
+  const [dischargeDate, setDischargeDate] = useState<Dayjs | null>(null);
+  const [dischargeCriteria, setDischargeCriteria] = useState<string>("");
 
   // OccupationalHealthCare form inputs
-  const dummy: string = "dummy";
+  const [employerName, setEmployerName] = useState("");
+  const [startDate, setStartDate] = useState<Dayjs | null>(null);
+  const [endDate, setEndDate] = useState<Dayjs | null>(null);
 
   const handleEntryTypeSelection = (event: SelectChangeEvent) => {
     setEntryType(event.target.value as EntryTypeLiterals | "");
@@ -68,7 +72,7 @@ export const PatientEntryForm = ({ patients }: Props) => {
             setDescription={setDescription}
             codeDiagnose={codeDiagnose}
             setCodeDiagnose={setCodeDiagnose}
-            healthCheckRating={healthCheckRating}
+            healthCheckRating={healthCheckRating ?? ""}
             setHealthCheckRating={setHealthCheckRating}
           />
         );
@@ -84,7 +88,10 @@ export const PatientEntryForm = ({ patients }: Props) => {
             setDescription={setDescription}
             codeDiagnose={codeDiagnose}
             setCodeDiagnose={setCodeDiagnose}
-            dummy={dummy}
+            dischargeDate={dischargeDate}
+            setDischargeDate={setDischargeDate}
+            dischargeCriteria={dischargeCriteria}
+            setDischargeCriteria={setDischargeCriteria}
           />
         );
 
@@ -99,7 +106,12 @@ export const PatientEntryForm = ({ patients }: Props) => {
             setDescription={setDescription}
             codeDiagnose={codeDiagnose}
             setCodeDiagnose={setCodeDiagnose}
-            dummy={dummy}
+            employerName={employerName}
+            setEmployerName={setEmployerName}
+            startDate={startDate}
+            setStartDate={setStartDate}
+            endDate={endDate}
+            setEndDate={setEndDate}
           />
         );
 
@@ -131,23 +143,59 @@ export const PatientEntryForm = ({ patients }: Props) => {
         break;
 
       case "Hospital":
-        // newPatientCompleteEntry = {
-        //   ...newPatientEntryBase,
-        //   type: "Hospital",
-        //   // discharge: { date, criteria}
-        // };
-        setNotify("Only Health Check submissions are enabled for testing.");
-        return;
+        if (!dischargeDate || !dischargeDate.isValid()) {
+          setNotify("A valid discharge date is required.");
+          setSubmitState(false);
+          return;
+        }
+        newPatientCompleteEntry = {
+          ...newPatientEntryBase,
+          type: "Hospital",
+          discharge: {
+            date: dischargeDate?.format("YYYY-MM-DD") ?? "",
+            criteria: dischargeCriteria,
+          },
+        };
+        break;
 
       case "Occupational Healthcare":
-        // newPatientCompleteEntry = {
-        //   ...newPatientEntryBase,
-        //   type: "OccupationalHealthcare",
-        //   // employerName:
-        //   // sickLeave: {startDate, endDate}
-        // };
-        setNotify("Only Health Check submissions are enabled for testing.");
-        return;
+        if (endDate?.isBefore(startDate)) {
+          setNotify("Selected end date is earlier than the start date.");
+          setSubmitState(false);
+          return;
+        }
+
+        if (!endDate && startDate) {
+          setNotify("End date of sick leave cannot be left empty.");
+          setSubmitState(false);
+          return;
+        }
+
+        if (endDate && !startDate) {
+          setNotify("Start date of sick leave cannot be left empty.");
+          setSubmitState(false);
+          return;
+        }
+
+        if (!startDate && !endDate) {
+          newPatientCompleteEntry = {
+            ...newPatientEntryBase,
+            type: "OccupationalHealthcare",
+            employerName: employerName,
+          };
+          break;
+        }
+
+        newPatientCompleteEntry = {
+          ...newPatientEntryBase,
+          type: "OccupationalHealthcare",
+          employerName: employerName,
+          sickLeave: {
+            startDate: startDate?.format("YYYY-MM-DD") ?? "",
+            endDate: endDate?.format("YYYY-MM-DD") ?? "",
+          },
+        };
+        break;
 
       default:
         setNotify("Invalid patient entry form type!");
@@ -185,7 +233,6 @@ export const PatientEntryForm = ({ patients }: Props) => {
                   issue !== null &&
                   "message" in issue
                 ) {
-
                   // if issue contains path array, join its parts with dots, such as,
                   // ["discharge", "date"] becomes "discharge.date"
                   const field =
@@ -201,8 +248,8 @@ export const PatientEntryForm = ({ patients }: Props) => {
                 return JSON.stringify(issue);
               })
               .join("; "),
-              // example output is 
-              // date: Invalid ISO date; healthCheckRating: Invalid input
+            // example output is
+            // date: Invalid ISO date; healthCheckRating: Invalid input
           );
         } else {
           setNotify(typeof details === "string" ? details : error.message);

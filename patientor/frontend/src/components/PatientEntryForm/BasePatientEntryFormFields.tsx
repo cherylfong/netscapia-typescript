@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 
 import diagnosesService from "../../services/diagnoses";
 import { Diagnosis } from "../../types";
-import {type BaseFormInputProps} from "../../types";
+import { type BaseFormInputProps } from "../../types";
 
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -39,7 +39,6 @@ function getStyles(name: string, personName: readonly string[], theme: Theme) {
       : theme.typography.fontWeightRegular,
   };
 }
-
 
 const BasePatientEntryFormFields = ({
   date,
@@ -82,7 +81,11 @@ const BasePatientEntryFormFields = ({
   return (
     <>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <DatePicker value={date} onChange={(newValue) => setDate(newValue)} />
+        <DatePicker
+          label="Entry Date"
+          value={date}
+          onChange={(newValue) => setDate(newValue)}
+        />
       </LocalizationProvider>
 
       <TextField

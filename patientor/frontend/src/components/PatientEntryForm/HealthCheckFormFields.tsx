@@ -1,6 +1,14 @@
 import BasePatientEntryFormFields from "./BasePatientEntryFormFields";
-import { type HealthCheckFormInputProps } from "../../types";
-import TextField from "@mui/material/TextField";
+import {
+  type HealthCheckFormInputProps,
+  healthCheckRatingLabels,
+} from "../../types";
+import { useState } from "react";
+import type { SelectChangeEvent } from "@mui/material/Select";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 
 const HealthCheckFormFields = ({
   date,
@@ -14,6 +22,22 @@ const HealthCheckFormFields = ({
   healthCheckRating,
   setHealthCheckRating,
 }: HealthCheckFormInputProps) => {
+  const [open, setOpen] = useState(false);
+
+  const handleRatingChange = (
+    event: SelectChangeEvent<typeof healthCheckRating>,
+  ) => {
+    setHealthCheckRating(Number(event.target.value));
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
   return (
     <>
       <BasePatientEntryFormFields
@@ -27,17 +51,28 @@ const HealthCheckFormFields = ({
         setCodeDiagnose={setCodeDiagnose}
       />
 
-      <TextField
-        id="entry-health-check-rating"
-        label="Health Check Rating (0-3)"
-        variant="outlined"
-        required
-        value={healthCheckRating ?? ""}
-        onChange={(event) => {
-          const value = event.target.value;
-          setHealthCheckRating(value === "" ? undefined : Number(value));
-        }}
-      />
+      <FormControl fullWidth>
+        <InputLabel id="entry-health-check-rating-label">
+          Health Check Rating *
+        </InputLabel>
+        <Select
+          labelId="entry-health-check-rating-label"
+          id="entry-health-check-rating"
+          open={open}
+          onClose={handleClose}
+          onOpen={handleOpen}
+          value={healthCheckRating}
+          label="Health Check Rating"
+          onChange={handleRatingChange}
+          required
+        >
+          {Object.entries(healthCheckRatingLabels).map(([rating, label]) => (
+            <MenuItem key={rating} value={Number(rating)}>
+              {rating} - {label}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
     </>
   );
 };

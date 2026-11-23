@@ -39,10 +39,10 @@ export enum HealthCheckRating {
 }
 
 export const healthCheckRatingLabels: Record<HealthCheckRating, string> = {
-  [HealthCheckRating.Healthy]: "healthy",
-  [HealthCheckRating.LowRisk]: "low risk",
-  [HealthCheckRating.HighRisk]: "high risk",
-  [HealthCheckRating.CriticalRisk]: "critical risk",
+  [HealthCheckRating.Healthy]: "Healthy",
+  [HealthCheckRating.LowRisk]: "Low Risk",
+  [HealthCheckRating.HighRisk]: "High Risk",
+  [HealthCheckRating.CriticalRisk]: "Critical risk",
 };
 
 export interface Entry {
@@ -52,7 +52,7 @@ export interface Entry {
   type: EntryType;
   employerName?: string;
   diagnosisCodes?: Array<Diagnosis["code"]>;
-  healthCheckRating?: HealthCheckRating;
+  healthCheckRating?: HealthCheckRating | "";
   discharge?: {
     date: string;
     criteria: string;
@@ -80,14 +80,22 @@ export interface BaseFormInputProps {
 }
 
 export interface HealthCheckFormInputProps extends BaseFormInputProps {
-  healthCheckRating: HealthCheckRating | undefined;
-  setHealthCheckRating: (value: HealthCheckRating | undefined) => void;
+  healthCheckRating: HealthCheckRating | "";
+  setHealthCheckRating: (value: HealthCheckRating | "") => void;
 }
 
 export interface HospitalFormInputProps extends BaseFormInputProps {
-  dummy: string;
+  dischargeDate: Dayjs | null;
+  setDischargeDate: (value: Dayjs | null) => void;
+  dischargeCriteria: string;
+  setDischargeCriteria: (value: string) => void;
 }
 
 export interface OccupationalHealthCareInputProp extends BaseFormInputProps {
-  dummy: string;
+  employerName: string;
+  setEmployerName: (value: string) => void;
+  startDate: Dayjs | null;
+  setStartDate: (value: Dayjs | null) => void;
+  endDate: Dayjs | null;
+  setEndDate: (value: Dayjs | null) => void;
 }

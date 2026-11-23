@@ -103,7 +103,9 @@ export const PatientView = () => {
     }
   };
 
-  const healthCheckRatingSymbol = (rating: HealthCheckRating | undefined) => {
+  const healthCheckRatingSymbol = (
+    rating: HealthCheckRating | "" | undefined,
+  ) => {
     switch (rating) {
       case HealthCheckRating.Healthy:
         return (
@@ -194,6 +196,18 @@ export const PatientView = () => {
                 </li>
               ))}
             </ul>
+            <div>
+              {entry.discharge ? "Discharge Information:" : ""}
+              {entry.discharge && (
+                <ul>
+                  <li>Discharged on {entry.discharge?.date}</li>
+                  <li>
+                    Criteria for discharge is{" "}
+                    <b>{entry.discharge?.criteria}</b>{" "}
+                  </li>
+                </ul>
+              )}
+            </div>
             <p>
               <RateReviewIcon fontSize="medium" />
               diagnosed by {entry.specialist}
@@ -217,6 +231,16 @@ export const PatientView = () => {
                 </li>
               ))}
             </ul>
+            <div>
+              {entry.sickLeave ? "Sick Leave:" : "No sick leave issued."}
+              {entry.sickLeave && (
+                <ul>
+                  <li>Start Date: {entry.sickLeave?.startDate}</li>
+                  <li>End Date: {entry.sickLeave?.endDate}</li>
+                </ul>
+              )}
+            </div>
+
             <p>
               <RateReviewIcon fontSize="medium" />
               diagnosed by {entry.specialist}
