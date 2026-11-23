@@ -1112,3 +1112,71 @@ const parseNewPatientAddition = (object: unknown): NewPatientEntry => {
 ```
 
 Use to this [specific point in the commit history](https://github.com/cherylfong/netscapia-typescript/commit/53908c35ca46f5a2db5486f30c187d4480111e72) to refer to the functions `parseNewPatientAddition` in `utils.ts` and `NewPatientSchema.parse` which is used within `newPatientParser` of `middleware.ts` mentioned in this section.
+
+### Numeric Enum Mapping
+
+A TypeScript numeric enum will create mappings in both directions, i.e, keys to values, and values to keys.
+
+For example, `HealthCheckRating`, in [`patientor/frontend/src/types.ts`](patientor/frontend/src/types.ts)is a numeric enum:
+
+```typescript
+enum HealthCheckRating {
+  Healthy = 0,
+  LowRisk = 1,
+  HighRisk = 2,
+  CriticalRisk = 3,
+}
+```
+
+When mapped using `Object.values()` or `Object.entries()`, in the following manner,
+
+```typescript
+{Object.values(HealthCheckRating).map((rate, idx) => (
+  <MenuItem key={idx} value={rate}>
+    {rate}
+  </MenuItem>
+))}
+```
+
+the output will look like this.
+
+```plaintext
+Healthy
+LowRisk
+HighRisk
+CrticalRisk
+0
+1
+2
+3
+```
+
+In other words, at runtime, the object behaves like this:
+
+```typescript
+{
+  Healthy: 0,
+  LowRisk: 1,
+  HighRisk: 2,
+  CriticalRisk: 3,
+  0: "Healthy",
+  1: "LowRisk",
+  2: "HighRisk",
+  3: "CriticalRisk",
+}
+```
+
+A way to separate the keys from the values is using the `filter()` method before using `map()`:
+
+```typescript
+{Object.values(HealthCheckRating)
+  .filter(
+  (rating): rating is HealthCheckRating =>
+    typeof rating === "number",
+    )
+  .map((rating) => (
+    <MenuItem key={rating} value={rating}>
+      {rating} - {HealthCheckRating[rating]}
+     </MenuItem>
+))}
+```
