@@ -23,10 +23,12 @@ import MedicalServicesIcon from "@mui/icons-material/MedicalServices";
 import AirlineSeatFlatIcon from "@mui/icons-material/AirlineSeatFlat";
 
 import { Button } from "@mui/material";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export const PatientView = () => {
   const patientId: string | undefined = useParams().id;
+
+  const navigate = useNavigate();
 
   const [patient, setPatient] = useState<Patient | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -270,12 +272,11 @@ export const PatientView = () => {
           Entries
           <Button
             sx={{ left: "50px" }}
-            component={Link}
-            to={`/patients/${patient.id}/new-entry/`}
+            onClick={() => navigate(`/patients/${patient.id}/new-entry/`)}
             variant="contained"
             color="primary"
           >
-            New Entry
+            Add New Entry
           </Button>
         </h3>
       </div>
