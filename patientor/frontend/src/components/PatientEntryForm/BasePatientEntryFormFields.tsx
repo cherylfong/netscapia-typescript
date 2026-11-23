@@ -82,7 +82,7 @@ const BasePatientEntryFormFields = ({
     <>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DatePicker
-          label="Entry Date"
+          label="Date"
           value={date}
           onChange={(newValue) => setDate(newValue)}
         />
