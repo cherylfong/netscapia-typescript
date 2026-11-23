@@ -46,7 +46,7 @@ jobs:
       run: npx playwright install --with-deps chromium
 
     - name: Wait for servers to start
-      run: npx wait-on http://localhost:3001/api/ping http://localhost:5173 --timeout 60000
+      run: npx wait-on http://localhost:3000/api/ping http://localhost:5173 --timeout 60000
 
     - name: Run E2E tests
       working-directory: ./patientor-tests
