@@ -22,6 +22,14 @@ Branches `chapter-2` and `chapter-5` do not have triggered tests through GitHub 
 [![Health app E2E Tests](https://github.com/cherylfong/netscapia-typescript/actions/workflows/healthapp-e2e-tests.yml/badge.svg)](https://github.com/cherylfong/netscapia-typescript/actions/workflows/healthapp-e2e-tests.yml)
 
 </details>
+<br/>
+
+<details>
+<summary> chapter-6 </summary>
+
+[![Patientor E2E Tests](https://github.com/cherylfong/netscapia-typescript/actions/workflows/patientor-e2e-tests.yml/badge.svg)](https://github.com/cherylfong/netscapia-typescript/actions/workflows/patientor-e2e-tests.yml)
+
+</details>
 
 ## Chapter 2 | Background and Introduction
 
