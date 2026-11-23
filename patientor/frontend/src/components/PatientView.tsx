@@ -168,7 +168,7 @@ export const PatientView = () => {
             <p>
               <i>{entry.description}</i>
             </p>
-            <p>{healthCheckRatingSymbol(entry.healthCheckRating)}</p>
+            {healthCheckRatingSymbol(entry.healthCheckRating)}
             <p>
               <RateReviewIcon fontSize="medium" />
               diagnosed by {entry.specialist}
@@ -185,8 +185,8 @@ export const PatientView = () => {
               <i>{entry.description}</i>
             </p>
             <ul>
-              {entry.diagnosisCodes?.map((code: string) => (
-                <li>
+              {entry.diagnosisCodes?.map((code: string, idx: number) => (
+                <li key={idx}>
                   {code} {getDiagnosisCodeDescription(code)}
                 </li>
               ))}
@@ -208,8 +208,8 @@ export const PatientView = () => {
             </p>
 
             <ul>
-              {entry.diagnosisCodes?.map((code: string) => (
-                <li>
+              {entry.diagnosisCodes?.map((code: string, idx: number) => (
+                <li key={idx}>
                   {code} {getDiagnosisCodeDescription(code)}
                 </li>
               ))}
